@@ -11,7 +11,7 @@ This project tries to both explore new/novel data visualizations and
 interactions as well as expose already available data to provide actionable
 insights and increased transparency in government.
 
-This work is currently in progress at the
+This work is ***currently in progress*** at the
 [Information Interfaces Lab](http://www.cc.gatech.edu/gvu/ii/) in the
 [GVU Center](http://www.gvu.gatech.edu/) at
 [Georgia Tech](http://www.gatech.edu/).
@@ -20,7 +20,7 @@ This work is currently in progress at the
 
 So far:
  - [Apache CouchDB](http://couchdb.apache.org/)
- - misc python scripts to pre-process and bulk import data into CouchDB
+ - miscellaneous python scripts to pre-process and bulk import data into CouchDB
 
 Eventually:
  - [d3js](http://d3js.org/) to do some neat visualizations
@@ -58,6 +58,6 @@ copy the scripts in `views/` to the design documents (easiest to follow the
 and use Futon) to see some initial
 "analysis" of the data
 
-6. *???* :pray::sos::interrobang:
+6. *???*
 
-7. :heavy_dollar_sign:*Profit*:heavy_dollar_sign:
+7. *Profit.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
