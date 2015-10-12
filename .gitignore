@@ -1,2 +1,4 @@
-data/
 .DS_Store
+# ignore data files, except for the README
+/data/**
+!/data/README.md
