@@ -8,7 +8,7 @@ def sendBills(dbname='s', pathToBills='./113/bills/s/', rootURL='http://127.0.0.
     rootURL = rootURL + dbname + '/'
     pathToBills = pathToBills + "*/data.json"
     billsImported = 0
-    for path in glob.glob(pathToBills):
+    for path in glob.iglob(pathToBills):
         with open(path, 'r') as bill:
             billData = bill.read()
             billID = json.loads(billData)['bill_id']
