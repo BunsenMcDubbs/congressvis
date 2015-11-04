@@ -49,8 +49,8 @@ aka double-click and run
 3. Create 2 new databases on CouchDB - one for Senate and one for House of
 Representatives
 
-4. Use `utils/toCouch.py` to import data into CouchDB (see documentation by
-running `python utils/toCouch.py -h`)
+4. Use `utils/import.py` to import data into CouchDB (see documentation by
+running `python utils/import.py -h`)
 
 5. Familiarize yourself with Couch&rsquo;s views and Map-Reduce functions and
 copy the scripts in `views/` to the design documents (easiest to follow the
