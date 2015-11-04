@@ -61,3 +61,10 @@ and use Futon) to see some initial
 6. *???*
 
 7. *Profit.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
+
+### Quick Overview
+
+ - `data/` has the raw data from govtrack (see README there)
+ - `utils/` has python scripts to quickly import `data` files into CouchDB
+ - `views/` holds a copy of the important parts of the design documents that are used in CouchDB
+ - The rest of this repo is cool front-end d3 stuff! yay!
