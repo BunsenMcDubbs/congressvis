@@ -4,10 +4,18 @@
   ".*~$",
   ".*\\.swp$",
   ".*\\.bak$",
-  ".gitignore",
   ".DS_Store",
+
+  // ignore all data files and scripts
   "data$",
   "utils$",
   ".*\\.py$",
-  ".*\\.md$"
+
+  // ignore readme files
+  ".*\\.md$",
+
+  // ignore bower files and .gitignore
+  ".bowerrc",
+  "bower.json",
+  ".gitignore"
 ]

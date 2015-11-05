@@ -1,7 +1,11 @@
 .DS_Store
+
 # ignore data files, except for the README
 /data/**
 !/data/README.md
 
 # ignore couchapp id
 _id
+
+# ignore vendor js files
+/_attachments/vendor
