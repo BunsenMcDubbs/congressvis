@@ -7,11 +7,33 @@
     <script data-main="scripts/config" src="vendor/requirejs/require.js"></script>
   </head>
   <body>
-    <h1>Rep explorer</h1>
-    <div class="bio"></div>
+    <div class="container">
+      <h1>Rep explorer</h1>
+      <div id="people">
+
+      </div>
+    </div>
   </body>
 
   <script type="text/template" id="person-info">
-    <h2><%= name.official_full %></h2>
+    <div class="mdl-card mdl-shadow--4dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text"><%= name.official_full %></h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <%= current.party %>
+        <% if(current.type === "sen"){ %>
+          Senator
+        <% } else { %>
+          Representative
+        <% } %>
+        from
+        <%= current.state %>
+      </div>
+      <div class="mdl-card__actions mdl-card--border">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+          href="<%= current.contact_form %>">Contact <%= name.first %></a>
+      </div>
+    </div>
   </script>
 </html>
