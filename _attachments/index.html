@@ -1,38 +1,65 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Rep explorer</title>
+    <title>CongressViz</title>
     <link rel="stylesheet" href="vendor/material-design-lite/material.min.css"></script>
     <script src="vendor/material-design-lite/material.min.js"></script>
     <script data-main="scripts/config" src="vendor/requirejs/require.js"></script>
   </head>
   <body>
-    <div class="container">
-      <h1>Rep explorer</h1>
-      <div id="people">
+    <div class="container mdl-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title">CongressViz</span>
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation. We hide it in small screens. -->
+          <!-- <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+          </nav> -->
+        </div>
+      </header>
+      <div id="people" class="mdl-grid"></div>
 
-      </div>
+
+
+      <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+          <div class="mdl-logo">CongressViz</div>
+          <ul class="mdl-mini-footer__link-list">
+            <li><a href="http://www.cc.gatech.edu/gvu/ii/">Information Interfaces Group</a></li>
+            <li><a href="http://www.gvu.gatech.edu/">GVU Center</a></li>
+            <li><a href="http://www.gatech.edu/">Georgia Tech</a></li>
+          </ul>
+        </div>
+      </footer>
     </div>
   </body>
 
   <script type="text/template" id="person-info">
-    <div class="mdl-card mdl-shadow--4dp">
-      <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text"><%= name.official_full %></h2>
-      </div>
-      <div class="mdl-card__supporting-text">
-        <%= current.party %>
-        <% if(current.type === "sen"){ %>
-          Senator
-        <% } else { %>
-          Representative
-        <% } %>
-        from
-        <%= current.state %>
-      </div>
-      <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-          href="<%= current.contact_form %>">Contact <%= name.first %></a>
+    <div class="mdl-cell mdl-cell--4-col">
+      <div class="mdl-card mdl-shadow--4dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text"><%= name.official_full %></h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <%= current.party %>
+          <% if(current.type === "sen"){ %>
+            Senator
+          <% } else { %>
+            Representative
+          <% } %>
+          from
+          <%= current.state %>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            href="<%= current.contact_form %>">Contact <%= name.first %></a>
+        </div>
       </div>
     </div>
   </script>
