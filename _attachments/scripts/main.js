@@ -1,4 +1,4 @@
-define(["helper/util", "backbone", "models/people", "views/people_view"],
+define(["helper/util", "backbone", "people/people", "people/people_view"],
   function(util, Backbone, People, PeopleView) {
 
   console.log("CongressViz Initialized");

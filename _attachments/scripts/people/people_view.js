@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'views/person_view'],
+define(['underscore', 'backbone', 'person/person_view'],
 function(_, Backbone, PersonView) {
   var PeopleView = Backbone.View.extend({
     initialize: function() {
