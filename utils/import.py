@@ -71,12 +71,12 @@ def main(argv):
 
     ## TODO change data types to match the defaults and reload the database
     ## TODO add options to selectively import different types of data
-    # print 'importing house bills...'
-    # house_path = args['path'] + 'bills/hr/*/data.json'
-    # send_bills(house_path, root_url)
-    # print 'importing senate bills...'
-    # senate_path = args['path'] + 'bills/s/*/data.json'
-    # send_bills(senate_path, root_url)
+    print 'importing house bills...'
+    house_path = args['path'] + 'bills/hr/*/data.json'
+    send_bills(house_path, root_url)
+    print 'importing senate bills...'
+    senate_path = args['path'] + 'bills/s/*/data.json'
+    send_bills(senate_path, root_url)
     print 'importing legislators...'
     members_path = args['path'] + 'membership/legislators-current.yaml'
     send_members(members_path, root_url)
