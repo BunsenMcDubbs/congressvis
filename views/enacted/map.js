@@ -1,5 +1,5 @@
 function(doc) {
-  if (doc.doc_type && (doc.doc_type === 's' || doc.doc_type === 'hr')) {
+  if (doc.doc_type && doc.doc_type === 'bill') {
     var title = doc.official_title;
     var sponsors = [doc.sponsor.name];
     if (doc.history.enacted) {

@@ -1,5 +1,5 @@
 function (doc) {
-  if (doc.doc_type && (doc.doc_type === 's' || doc.doc_type === 'hr')) {
+  if (doc.doc_type && doc.doc_type === 'bill') {
     var title = null;
     if (doc.short_title) {
       title = doc.short_title;

@@ -1,5 +1,5 @@
 function(doc) {
-  if (doc.doc_type && (doc.doc_type === 's' || doc.doc_type === 'hr')) {
+  if (doc.doc_type && doc.doc_type === "bill") {
     var title = doc.official_title;
     var sponsors = [{'name': doc.sponsor.name, 'id': doc.sponsor.thomas_id}];
     if (doc.history.enacted && doc.subjects_top_term != "Congressional tributes" && doc.subjects.indexOf("Congressional tributes") == -1) {
@@ -10,7 +10,7 @@ function(doc) {
           sponsors.push({'name': doc.cosponsors[idx].name, 'id': doc.cosponsors[idx].thomas_id});
         }
       }
-      emit([parseInt(doc.congress), doc.bill_type, doc.bill_id, title], sponsors);
+      emit([parseInt(doc.congress), doc.bill_type, doc.bill_id], sponsors);
     }
   }
 };
