@@ -10,7 +10,7 @@ function(doc) {
         }
         votes[voteType] = temp;
       }
-      emit([doc.bill.type, bill_id], votes);
+      emit([doc.chamber, doc.bill.type, bill_id], votes);
     }
   }
 };

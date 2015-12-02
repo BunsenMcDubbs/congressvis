@@ -1,0 +1,34 @@
+/* styles for grid view*/
+.grid-view-wrapper {
+  overflow-x: scroll;
+  padding: 2em 1em;
+}
+
+.row {
+  display: block;
+  width: auto;
+  white-space: nowrap;
+}
+
+.billname {
+  display: inline-block;
+  width: 20em;
+}
+
+.vote {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  margin: 0 .2em;
+
+  background-color: #CFCFC4;
+}
+
+.vote.yes {
+  background-color: #7fbf7b;
+}
+
+.vote.no {
+  background-color: #af8dc3;
+}

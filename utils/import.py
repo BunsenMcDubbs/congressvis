@@ -54,11 +54,24 @@ def send_votes(path_to_votes, root_url, doc_type = "vote"):
             print "processed", str(votes_processed)
     print "finished all (" + str(votes_processed) + ") votes"
 
+def send_sessions(path_to_sessions, root_url, doc_type = "session"):
+    latest_session = -1
+    data =
+
 def main(argv):
     parser = argparse.ArgumentParser(description='bulk import data from GovTrack.us to CouchDB')
-    parser.add_argument('-d', '--db', help='name of the CouchDB database', required=True)
-    parser.add_argument('-u', '--url', nargs='?', help='root url of the database, default: http://127.0.0.1:5984/', default='http://127.0.0.1:5984/')
-    parser.add_argument('-p', '--path', nargs='?', help='path to congress root folder, default: current directory', default='.')
+    parser.add_argument('-d', '--db', help='name of the CouchDB database',
+        required=True)
+    parser.add_argument('-o', '--only', nargs='*',
+        help='only send certain types of data, default: all\nvotes,bills,members,sessions',
+        default=['votes', 'bills', 'members', 'sessions'],
+        choices=['votes', 'bills', 'members', 'sessions'])
+    parser.add_argument('-u', '--url', nargs='?',
+        help='root url of the database, default: http://127.0.0.1:5984/',
+        default='http://127.0.0.1:5984/')
+    parser.add_argument('-p', '--path', nargs='?',
+        help='path to congress root folder, default: current directory',
+        default='.')
     args = vars(parser.parse_args(argv))
     if args['url'][:7] != 'http://':
         args['url'] = 'http://' + args['url']
@@ -69,20 +82,25 @@ def main(argv):
 
     root_url = args['url'] + args['db'] + '/'
 
-    ## TODO change data types to match the defaults and reload the database
-    ## TODO add options to selectively import different types of data
-    print 'importing house bills...'
-    house_path = args['path'] + 'bills/hr/*/data.json'
-    send_bills(house_path, root_url)
-    print 'importing senate bills...'
-    senate_path = args['path'] + 'bills/s/*/data.json'
-    send_bills(senate_path, root_url)
-    print 'importing legislators...'
-    members_path = args['path'] + 'membership/legislators-current.yaml'
-    send_members(members_path, root_url)
-    print 'importing votes...'
-    votes_path = args['path'] + 'votes/*/*/data.json'
-    send_votes(votes_path, root_url)
+    if 'bills' in args['only']:
+        print 'importing house bills...'
+        house_path = args['path'] + 'bills/hr/*/data.json'
+        send_bills(house_path, root_url)
+        print 'importing senate bills...'
+        senate_path = args['path'] + 'bills/s/*/data.json'
+        send_bills(senate_path, root_url)
+    if 'members' in args['only']:
+        print 'importing legislators...'
+        members_path = args['path'] + 'membership/legislators-current.yaml'
+        send_members(members_path, root_url)
+    if 'votes' in args['only']:
+        print 'importing votes...'
+        votes_path = args['path'] + 'votes/*/*/data.json'
+        send_votes(votes_path, root_url)
+    if 'sessions' in args['only']:
+        print 'import sessions'
+        sessions_path = args['path'] + '../sessions.tsv'
+        send_sessions(sessions_path, root_url)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
