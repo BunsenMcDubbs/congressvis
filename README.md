@@ -19,8 +19,8 @@ This work is ***currently in progress*** at the
 ## What are you using?
 
 So far:
- - [Apache CouchDB](http://couchdb.apache.org/)
- - miscellaneous python scripts to pre-process and bulk import data into CouchDB
+ - [MySQL](https://www.mysql.com/)
+ - miscellaneous python scripts to pre-process and bulk import data into MySQL
 
 Eventually:
  - [d3js](http://d3js.org/) to do some neat visualizations
@@ -34,8 +34,6 @@ Eventually:
 Not relevant:
  - [Atom](https://atom.io/) text editor (just not for the big files - it
  really struggles)
- - [cheap IKEA couch cushions](http://www.ikea.com/us/en/catalog/products/50267370/) to facilitate
- comfort :trollface:
 
 
 ## Getting Started
@@ -43,64 +41,20 @@ Not relevant:
 1. Download data from [GovTrack](https://www.govtrack.us/developers/data) into
 the `data/` directory (see more details in the README there).
 
-2. Download [CouchDB](http://couchdb.apache.org/), install, and "setup"
-aka double-click and run
+2. Download and install [MySQL](https://www.mysql.com/) (and maybe
+  [MySQL Workbench](https://www.mysql.com/products/workbench/))
 
-3. Create 2 new databases on CouchDB - one for Senate and one for House of
-Representatives
+3. Import the schema from `utils/congressviz_schema.sql`
 
-4. Use `utils/import.py` to import data into CouchDB (see documentation by
-running `python utils/import.py -h`)
+4. Use `utils/mysql_import.py` to import data into MySQL (see documentation by
+running `python utils/mysql_import.py -h` and refer to README in data folder)
 
-5. Familiarize yourself with Couch&rsquo;s views and Map-Reduce functions and
-copy the scripts in `views/` to the design documents (easiest to follow the
-[tutorial](http://docs.couchdb.org/en/1.6.1/intro/tour.html#running-a-query-using-mapreduce)
-and use Futon) to see some initial
-"analysis" of the data
+5. *???*
 
-6. *???*
-
-7. *Profit.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
+6. *Profit.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
 
 ### Quick Overview
 
  - `data/` has the raw data from govtrack (see README there)
- - `utils/` has python scripts to quickly import `data` files into CouchDB
- - `views/` holds a copy of the important parts of the design documents that are used in CouchDB
+ - `utils/` has python scripts to quickly import `data` files into MySQL
  - The rest of this repo is cool front-end d3 stuff! yay!
-
-# Below docs generated from couchapp tool (integration in process)
-
-## Generated CouchApp
-
-This is meant to be an example CouchApp and to ship with most of the CouchApp goodies.
-
-Clone with git:
-
-   git clone git://github.com/couchapp/example.git
-   cd example
-
-Install with
-
-   couchapp push . http://localhost:5984/example
-
-or (if you have security turned on)
-
-   couchapp push . http://adminname:adminpass@localhost:5984/example
-
-You can also create this app by running
-
-   couchapp generate example && cd example
-   couchapp push . http://localhost:5984/example
-
-Deprecated: *couchapp generate proto && cd proto*
-
-
-## Todo
-
-* factor CouchApp Commonjs to jquery.couch.require.js
-* use $.couch.app in app.js
-
-## License
-
-Apache 2.0

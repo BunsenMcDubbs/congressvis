@@ -17,21 +17,30 @@ resolutions.
 
 Example with the 113rd Congress (2013-14):
 ```
-data/
-└── 113
-    ├── amendments
-    │   ├── hamdt
-    │   └── samdt
-    ├── bills
-    │   ├── hconres
-    │   ├── hjres
-    │   ├── hr
-    │   ├── hres
-    │   ├── s
-    │   ├── sconres
-    │   ├── sjres
-    │   └── sres
-    └── votes
-        ├── 2013
-        └── 2014
+data
+├── 113
+│   ├── amendments
+│   │   ├── hamdt
+│   │   └── samdt
+│   ├── bills
+│   │   ├── hconres
+│   │   ├── hjres
+│   │   ├── hr
+│   │   ├── hres
+│   │   ├── s
+│   │   ├── sconres
+│   │   ├── sjres
+│   │   └── sres
+│   └── votes
+│       ├── 2013
+│       └── 2014
+├── README.md
+├── membership
+│   ├── committee-membership-current.yaml
+│   ├── legislators-current.yaml
+│   └── legislators-historical.yaml
+├── sessions.tsv
+└── subjects
+    ├── crsnet.xml
+    └── liv111.xml
 ```
