@@ -4,8 +4,5 @@
 /data/**
 !/data/README.md
 
-# ignore couchapp id
-_id
-
 # ignore vendor js files
 /_attachments/vendor
