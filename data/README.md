@@ -9,11 +9,12 @@ here with the per-congress directories being stored at this level.
 
 **Note:** this is relatively temporary because it is imported into the database
 and thats where the magic happens. This is just a local/"master" copy of the
-data to refer back to or pre-process before importing into CouchDB.
+data to refer back to or pre-process before importing into MySQL.
 
-So far (as of commit ca0413b419969379bc186dc5f3715907dffce75c) we only use the
+~~So far (as of commit ca0413b419969379bc186dc5f3715907dffce75c) we only use the
 data in `<congress>/bills/hr/` and `<congress>/bills/s/` aka bills, not
-resolutions.
+resolutions.~~ (no longer true as of commit
+f5908f59aea080b76932f532ea4d5486ad4345ce, now all bills and resolutions are used)
 
 Example with the 113rd Congress (2013-14):
 ```
