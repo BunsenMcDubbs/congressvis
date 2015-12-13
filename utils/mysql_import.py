@@ -16,7 +16,7 @@ def importSubjects(cnx, filepath):
         "(subject_top_term) " \
         "VALUES (%s)"
     cursor = cnx.cursor()
-    
+
     for top_term_node in root:
         top_term = top_term_node.attrib['value']
         cursor.execute(add_subject_top_term, (top_term,))
@@ -213,7 +213,6 @@ def main(argv):
     cnx = mysql.connector.connect(user=args['user'],password=args['password'],database=args['database'])
     if args['path'][-1] == '/':
         args['path'] = args['path'][:-1]
-    print args, args['path']+'/liv111.xml'
     # importSubjects(cnx, args['path']+'/liv111.xml')
     # importSubjects(cnx, args['path']+'/crsnet.xml')
     # importSessions(cnx, args['path']+'/sessions.tsv')
