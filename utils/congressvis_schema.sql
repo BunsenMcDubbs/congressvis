@@ -1,8 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `congressviz` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `congressviz`;
 -- MySQL dump 10.13  Distrib 5.7.9, for osx10.9 (x86_64)
 --
--- Host: localhost    Database: congressviz
+-- Host: localhost    Database: congressvis
 -- ------------------------------------------------------
 -- Server version	5.7.9
 
@@ -91,6 +89,24 @@ CREATE TABLE `bill_subject` (
   CONSTRAINT `bill_id_fk` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`bill_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `subject_id_fk` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=95946 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `bill_version`
+--
+
+DROP TABLE IF EXISTS `bill_version`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bill_version` (
+  `bill_version_id` varchar(25) NOT NULL,
+  `issued_on` datetime NOT NULL,
+  `version_code` varchar(10) NOT NULL,
+  `bill_id` varchar(20) NOT NULL,
+  PRIMARY KEY (`bill_version_id`),
+  KEY `bill_id_idx` (`bill_id`),
+  CONSTRAINT `bill_id` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`bill_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,17 +247,17 @@ CREATE TABLE `term` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `congressviz`.`term_AFTER_INSERT` 
-AFTER INSERT ON `term` 
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `congressvis`.`term_AFTER_INSERT`
+AFTER INSERT ON `term`
 FOR EACH ROW
 BEGIN
 	declare done int default false;
 	declare fetched_congress_id INT;
 	declare congress_query cursor for select `congress_id` from `congress` where `congress`.`start` <= NEW.end and `congress`.`end` >= NEW.start;
 	declare continue handler for not found set done = 1;
-    
+
     open congress_query;
-    
+
     find_congresses: loop
 		fetch congress_query into fetched_congress_id;
         if done then
@@ -249,7 +265,7 @@ BEGIN
 		end if;
         insert into `member_congress` (`member_bioguide_id`, `congress_id`, `term_id`) VALUES(NEW.`member_bioguide_id`, fetched_congress_id, NEW.`term_id`);
     end loop;
-    
+
     close congress_query;
 END */;;
 DELIMITER ;
@@ -280,11 +296,11 @@ CREATE TABLE `vote` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping events for database 'congressviz'
+-- Dumping events for database 'congressvis'
 --
 
 --
--- Dumping routines for database 'congressviz'
+-- Dumping routines for database 'congressvis'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -296,4 +312,4 @@ CREATE TABLE `vote` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-13 16:28:01
+-- Dump completed on 2015-12-16 14:14:18

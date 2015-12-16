@@ -4,9 +4,11 @@ import mysql.connector
 import glob
 import json
 import yaml
+import requests
 import sys
 
 def importSubjects(cnx, filepath):
+    print 'importing subjects', filepath
     tree = ET.parse(filepath)
     root = tree.getroot()
     add_subject = "INSERT INTO subject " \
@@ -27,6 +29,7 @@ def importSubjects(cnx, filepath):
     cursor.close()
 
 def importSessions(cnx, filepath):
+    print 'importing sessions', filepath
     add_session = "INSERT INTO congress (`congress_id`, `start`, `end`) " \
         "VALUES (%s, %s, %s)"
     cursor = cnx.cursor()
@@ -43,7 +46,6 @@ def importSessions(cnx, filepath):
                 continue
             if congress != int(line[0]):
                 if congress != -1:
-                    print add_session%(congress,start,end)
                     cursor.execute(add_session, (congress, start, end))
                 congress = int(line[0])
                 start = line[2]
@@ -53,6 +55,8 @@ def importSessions(cnx, filepath):
     cursor.close()
 
 def importMembers(cnx, filepath):
+    print 'importing members', filepath
+    # TODO change to use a proxy dict like in importBills
     add_member = "INSERT INTO member " \
         "(bioguide_id, govtrack_id, thomas_id, lis_id, first_name, last_name, gender, birthday) " \
         "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
@@ -77,9 +81,8 @@ def importMembers(cnx, filepath):
             last_name = person['name']['last']
             gender = person['bio']['gender']
             birthday = person['bio']['birthday'] if 'birthday' in person['bio'] else None
-            print 'importing', first_name, last_name
+            # print 'importing', first_name, last_name
             cursor.execute(add_member, (bioguide_id, govtrack_id, thomas_id, lis_id, first_name, last_name, gender, birthday))
-            continue
             for term in person['terms']:
                 district = term['district'] if 'district' in term else None
                 party = term['party'] if 'party' in term else None
@@ -89,7 +92,8 @@ def importMembers(cnx, filepath):
     cnx.commit()
     cursor.close()
 
-def importBills(cnx, filepath):
+def importBills(cnx, filepath, elasticsearch_url=None):
+    print 'import bills', filepath
     num_bills_processed = 0
 
     add_bill = "INSERT INTO bill " \
@@ -105,7 +109,7 @@ def importBills(cnx, filepath):
     cursor = cnx.cursor()
     copy_fields = ['bill_id', 'bill_type', 'congress', 'number', 'official_title', 'popular_title', 'short_title', 'introduced_at', 'active', 'vetoed', 'enacted', 'awaiting_signature', 'status', 'status_at', 'sponsor_thomas_id', 'subject_top_term_id']
 
-    for path in glob.iglob(filepath):
+    for path in glob.iglob(filepath + "data.json"):
         with open(path, 'r') as bill_file:
             bill = json.loads(bill_file.read())
             bill_id = bill['bill_id']
@@ -131,13 +135,15 @@ def importBills(cnx, filepath):
             cursor.execute(add_bill, proxy)
             spon = bill['sponsor']
             cursor.execute(add_sponsor, (spon['thomas_id'], bill_id, bill['introduced_at'], None, 1))
-            # for cos in bill['cosponsors']:
-                # cursor.execute(add_sponsor, (cos['thomas_id'], bill_id, cos['sponsored_at'], cos['withdrawn_at'], 0))
+            for cos in bill['cosponsors']:
+                cursor.execute(add_sponsor, (cos['thomas_id'], bill_id, cos['sponsored_at'], cos['withdrawn_at'], 0))
             for subject in bill['subjects']:
                 cursor.execute(get_subject_id, (subject,))
                 subject_id = cursor.fetchone()
                 if subject_id is not None:
                     cursor.execute(add_subject, (subject_id[0], bill_id))
+            if elasticsearch_url is not None:
+                importBillText(cnx, elasticsearch_url, path[:-len('data.json')] + 'text-versions/*/', proxy)
             num_bills_processed += 1
             if num_bills_processed % 100 == 0:
                 print 'finished', num_bills_processed, 'bills'
@@ -146,7 +152,35 @@ def importBills(cnx, filepath):
     cnx.commit()
     cursor.close()
 
+def importBillText(cnx, url, filepath, bill_info):
+    addBillVersion = "INSERT INTO bill_version " \
+        "(bill_version_id, issued_on, version_code, bill_id) " \
+        "VALUES (%(version_id)s, %(issued_on)s, %(version_code)s, %(bill_id)s)"
+    cursor = cnx.cursor()
+    for path in glob.iglob(filepath):
+        with open(path + 'data.json', 'r') as text_info_file:
+            text_info = json.loads(text_info_file.read())
+            proxy = {
+                'version_id':       text_info['bill_version_id'],
+                'issued_on':        text_info['issued_on'],
+                'version_code':     text_info['version_code'],
+                'bill_id':          bill_info['bill_id'],
+                'official_title':   bill_info['official_title'],
+                'short_title':      bill_info['short_title'],
+                'popular_title':    bill_info['popular_title']
+            }
+            # print addBillVersion%(proxy)
+            # print 'add to elasticsearch', path + 'document.txt'
+            cursor.execute(addBillVersion, proxy)
+            with open(path + 'document.txt', 'r') as bill_text_file:
+                proxy['bill_text'] = bill_text_file.read()
+            r = requests.put(url + 'bill_text/' + proxy['version_id'], json.dumps(proxy))
+            # TODO detect and handle errors
+    cnx.commit()
+    cursor.close()
+
 def importVotes(cnx, filepath):
+    print 'import votes', filepath
     num_votes_processed = 0
 
     add_vote = "INSERT INTO vote " \
@@ -206,28 +240,33 @@ def main(argv):
     parser = argparse.ArgumentParser(description='bulk import data from GovTrack.us to MySQL schema')
     parser.add_argument('-u', '--user', help='username', required=True)
     parser.add_argument('-p', '--password', help='password', required=True)
-    parser.add_argument('-db', '--database', help='name of MySQL schema', default='congressviz')
+    parser.add_argument('-db', '--database', help='name of MySQL schema', required=True)
     parser.add_argument('--path', help='path to root folder of GovTrack data', default='../data')
     parser.add_argument('-c', '--congress', help='congress number', default='113')
+    parser.add_argument('-H', '--host', help='database host', default='localhost')
+    parser.add_argument('-e', '--elasticsearch_host', default='http://localhost:9200/')
     args = vars(parser.parse_args(argv))
     cnx = mysql.connector.connect(user=args['user'],password=args['password'],database=args['database'])
     if args['path'][-1] == '/':
         args['path'] = args['path'][:-1]
-    # importSubjects(cnx, args['path']+'/liv111.xml')
-    # importSubjects(cnx, args['path']+'/crsnet.xml')
-    # importSessions(cnx, args['path']+'/sessions.tsv')
-    # importMembers(cnx, args['path']+'/membership/legislators-current.yaml')
-    # importMembers(cnx, args['path']+'/membership/legislators-historical.yaml')
-    # importBills(cnx, args['path']+'/113/bills/hconres/*/data.json')
-    # importBills(cnx, args['path']+'/113/bills/hjres/*/data.json')
-    # importBills(cnx, args['path']+'/113/bills/hres/*/data.json')
-    # importBills(cnx, args['path']+'/113/bills/hr/*/data.json')
-    # importBills(cnx, args['path']+'/113/bills/s/*/data.json')
-    # importBills(cnx, args['path']+'/113/bills/sconres/*/data.json')
-    # importBills(cnx, args['path']+'/113/bills/sjres/*/data.json')
-    # importBills(cnx, args['path']+'/113/bills/sres/*/data.json')
-    # importVotes(cnx, args['path']+'/113/votes/2013/*/data.json')
-    # importVotes(cnx, args['path']+'/113/votes/2014/*/data.json')
+    args['elasticsearch_host'] += args['database'] + '/'
+    importSubjects(cnx, args['path']+'/subjects/liv111.xml')
+    importSubjects(cnx, args['path']+'/subjects/crsnet.xml')
+    importSessions(cnx, args['path']+'/sessions.tsv')
+    importMembers(cnx, args['path']+'/membership/legislators-current.yaml')
+    importMembers(cnx, args['path']+'/membership/legislators-historical.yaml')
+    importBills(cnx, args['path']+'/113/bills/hconres/*/', elasticsearch_url=args['elasticsearch_host'])
+    importBills(cnx, args['path']+'/113/bills/hjres/*/', elasticsearch_url=args['elasticsearch_host'])
+    importBills(cnx, args['path']+'/113/bills/hres/*/', elasticsearch_url=args['elasticsearch_host'])
+    importBills(cnx, args['path']+'/113/bills/hr/*/', elasticsearch_url=args['elasticsearch_host'])
+    importBills(cnx, args['path']+'/113/bills/s/*/', elasticsearch_url=args['elasticsearch_host'])
+    importBills(cnx, args['path']+'/113/bills/sconres/*/', elasticsearch_url=args['elasticsearch_host'])
+    importBills(cnx, args['path']+'/113/bills/sjres/*/', elasticsearch_url=args['elasticsearch_host'])
+    importBills(cnx, args['path']+'/113/bills/sres/*/', elasticsearch_url=args['elasticsearch_host'])
+    importVotes(cnx, args['path']+'/113/votes/2013/*/data.json')
+    importVotes(cnx, args['path']+'/113/votes/2014/*/data.json')
+    print 'all data imports done'
+    cnx.commit()
     cnx.close()
 
 if __name__ == "__main__":
