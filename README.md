@@ -20,34 +20,29 @@ This work is ***currently in progress*** at the
 
 So far:
  - [MySQL](https://www.mysql.com/)
- - miscellaneous python scripts to pre-process and bulk import data into MySQL
+ - [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+ - [d3js](http://d3js.org/) to do some neat visualizations
+ - miscellaneous python scripts to pre-process and bulk import data
 
 Eventually:
- - [d3js](http://d3js.org/) to do some neat visualizations
- - [ElasticSearch](https://www.elastic.co/products/elasticsearch) or
- [Solr](http://lucene.apache.org/solr/) to do some speedy and cool full-text
- search/analysis on bill text
  - probably [Firebase](https://www.firebase.com/) to facilitate easy real-time
  communications/collaboration between multiple devices
  - possibly some [nodejs](https://nodejs.org/en/) server with WebSockets instead
 
-Not relevant:
- - [Atom](https://atom.io/) text editor (just not for the big files - it
- really struggles)
-
-
 ## Getting Started
 
 1. Download data from [GovTrack](https://www.govtrack.us/developers/data) into
-the `data/` directory (see more details in the README there).
+  the `data/` directory (see more details in the README there).
 
-2. Download and install [MySQL](https://www.mysql.com/) (and maybe
-  [MySQL Workbench](https://www.mysql.com/products/workbench/))
+2. Install [MySQL](https://www.mysql.com/) (and maybe
+  [MySQL Workbench](https://www.mysql.com/products/workbench/)) and
+  [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+    - On Mac OS X: `brew install mysql elasticsearch`
 
-3. Import the schema from `utils/congressviz_schema.sql`
+3. Import the schema from `utils/congressvis_schema.sql`
 
 4. Use `utils/mysql_import.py` to import data into MySQL (see documentation by
-running `python utils/mysql_import.py -h` and refer to README in data folder)
+  running `python utils/mysql_import.py -h` and refer to README in data folder)
 
 5. *???*
 
@@ -57,4 +52,4 @@ running `python utils/mysql_import.py -h` and refer to README in data folder)
 
  - `data/` has the raw data from govtrack (see README there)
  - `utils/` has python scripts to quickly import `data` files into MySQL
- - The rest of this repo is cool front-end d3 stuff! yay!
+ - The rest of this repo is/will be nodejs stuff
