@@ -1,8 +1,12 @@
 .DS_Store
 
 # ignore data files, except for the README
-/data/**
+data/**
 !/data/README.md
 
-# ignore vendor js files
-/_attachments/vendor
+# ignore vendor js files (bower and npm)
+public/vendor
+node_modules
+
+*.gz
+*.log
