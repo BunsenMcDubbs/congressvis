@@ -16,6 +16,8 @@ data in `<congress>/bills/hr/` and `<congress>/bills/s/` aka bills, not
 resolutions.~~ (no longer true as of commit
 f5908f59aea080b76932f532ea4d5486ad4345ce, now all bills and resolutions are used)
 
+Import scripts are in `data/utils`
+
 Example with the 113rd Congress (2013-14):
 ```
 data

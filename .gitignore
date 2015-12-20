@@ -2,7 +2,8 @@
 
 # ignore data files, except for the README
 data/**
-!/data/README.md
+!data/README.md
+!data/utils
 
 # ignore vendor js files (bower and npm)
 public/vendor

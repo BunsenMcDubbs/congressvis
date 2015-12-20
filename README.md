@@ -39,10 +39,10 @@ Eventually:
   [Elasticsearch](https://www.elastic.co/products/elasticsearch)
     - On Mac OS X: `brew install mysql elasticsearch`
 
-3. Import the schema from `utils/congressvis_schema.sql`
+3. Import the schema from `data/utils/congressvis_schema.sql`
 
-4. Use `utils/mysql_import.py` to import data into MySQL (see documentation by
-  running `python utils/mysql_import.py -h` and refer to README in data folder)
+4. Use `data/utils/mysql_import.py` to import data into MySQL (see documentation by
+  running `python data/utils/mysql_import.py -h` and refer to README in data folder)
 
 5. *???*
 
@@ -51,5 +51,5 @@ Eventually:
 ### Quick Overview
 
  - `data/` has the raw data from govtrack (see README there)
- - `utils/` has python scripts to quickly import `data` files into MySQL
+ - `data/utils/` has python scripts to quickly import data files into MySQL
  - The rest of this repo is/will be nodejs stuff
