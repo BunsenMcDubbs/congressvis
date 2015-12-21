@@ -44,12 +44,36 @@ Eventually:
 4. Use `data/utils/mysql_import.py` to import data into MySQL (see documentation by
   running `python data/utils/mysql_import.py -h` and refer to README in data folder)
 
-5. *???*
+5. Install node dependencies and bower dependencies with `npm install` and `bower install`
 
-6. *Profit.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
+6. Copy `config-example.js` to `config.js` and fill in with the proper credentials
+
+7. Start the server with `npm start` (which runs the script `./bin/www`)
+
+8. *???*
+
+9. *Profit.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
 
 ### Quick Overview
 
- - `data/` has the raw data from govtrack (see README there)
- - `data/utils/` has python scripts to quickly import data files into MySQL
- - The rest of this repo is/will be nodejs stuff
+**Note:** This project layout was initially generated with the
+[`express-generator`](http://expressjs.com/en/starter/generator.html)
+and mostly follows standard Express.js conventions.
+
+#### Directories
+
+ - `data/` raw data from govtrack (see README there)
+  - `data/utils/` python scripts to quickly import data files into MySQL
+ - `api/` handlers and converters that talk with the database (ORM-esque)
+ - `public/` (static) client-side resources
+  - `public/style` -> stylesheets
+  - `public/scripts` -> client-side javascript ex) Backbone application,
+  d3js visualizations
+ - `routes/` express routers (and a bit of database connection logic)
+ - `views/` view templates (handlebars) that are (mostly) rendered server-side
+
+#### Files of Interest
+ - `bin/www` node server startup script
+  - can be called with either `npm start` (recommended) or `./bin/www` from
+  project root
+ - `config.js` deployment specific settings and sensitive Information (credentials etc.)
