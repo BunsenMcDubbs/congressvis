@@ -9,5 +9,8 @@ data/**
 public/vendor
 node_modules
 
+# ignore actual config file (with username, password, secrets etc)
+config.js
+
 *.gz
 *.log
