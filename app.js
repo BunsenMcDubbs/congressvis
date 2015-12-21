@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var api_routes = new (require('./routes/api'))().createRouter();
 
 var app = express();
 
@@ -44,7 +44,7 @@ hbs.registerHelper('block', function(name) {
 });
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/api', api_routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -60,10 +60,20 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    if (res.get('Content-Type') === 'application/json') {
+      res.json({
+        message: err.message,
+        error: { status: err.status || 500, stack: err.stack }
+      });
+    } else {
+      res.render('error', {
+        message: err.message,
+        error: err
+      });
+    }
+    if (!err.status || err.status !== 404) {
+      console.error(err.stack);
+    }
   });
 }
 
@@ -71,10 +81,14 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+  if (res.get('Content-Type') === 'application/json') {
+    res.json({ message: err.message });
+  } else {
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  }
 });
 
 
