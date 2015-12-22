@@ -21,13 +21,14 @@ This work is ***currently in progress*** at the
 So far:
  - [MySQL](https://www.mysql.com/)
  - [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+ - [Backbone.js](http://backbonejs.org/) for the client-side web
  - [d3js](http://d3js.org/) to do some neat visualizations
+ - [Node.js](https://nodejs.org/en/) and [Express.js](http://expressjs.com/en/index.html) framework
  - miscellaneous python scripts to pre-process and bulk import data
 
 Eventually:
  - probably [Firebase](https://www.firebase.com/) to facilitate easy real-time
  communications/collaboration between multiple devices
- - possibly some [nodejs](https://nodejs.org/en/) server with WebSockets instead
 
 ## Getting Started
 
@@ -50,17 +51,19 @@ Eventually:
 
 7. Start the server with `npm start` (which runs the script `./bin/www`)
 
-8. *???*
+8. Navigate to http://localhost:3000 to confirm Node/Express is running
 
-9. *Profit.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
+9. *???*
 
-### Quick Overview
+10. *Relax.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
+
+## Project/Filesystem Overview
 
 **Note:** This project layout was initially generated with the
 [`express-generator`](http://expressjs.com/en/starter/generator.html)
 and mostly follows standard Express.js conventions.
 
-#### Directories
+### Directories
 
  - `data/` raw data from govtrack (see README there)
   - `data/utils/` python scripts to quickly import data files into MySQL
@@ -72,8 +75,19 @@ and mostly follows standard Express.js conventions.
  - `routes/` express routers (and a bit of database connection logic)
  - `views/` view templates (handlebars) that are (mostly) rendered server-side
 
-#### Files of Interest
+### Files of Interest
  - `bin/www` node server startup script
   - can be called with either `npm start` (recommended) or `./bin/www` from
   project root
- - `config.js` deployment specific settings and sensitive information (credentials etc.)
+ - `config.js` deployment specific settings and sensitive information
+ (credentials etc.)
+ - `app.js`
+
+### Database Schema
+
+**Todo:** written documentation for database schema
+![mysql database diagram](data/utils/schema_diagram.png)
+
+## API Documentation
+
+**Todo:** write API, then document
