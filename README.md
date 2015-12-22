@@ -76,4 +76,4 @@ and mostly follows standard Express.js conventions.
  - `bin/www` node server startup script
   - can be called with either `npm start` (recommended) or `./bin/www` from
   project root
- - `config.js` deployment specific settings and sensitive Information (credentials etc.)
+ - `config.js` deployment specific settings and sensitive information (credentials etc.)

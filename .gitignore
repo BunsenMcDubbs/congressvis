@@ -1,16 +1,16 @@
 .DS_Store
 
 # ignore data files, except for the README
-data/**
-!data/README.md
-!data/utils
+/data/**
+!/data/README.md
+!/data/utils
 
 # ignore vendor js files (bower and npm)
-public/vendor
-node_modules
+/public/vendor
+/node_modules
 
 # ignore actual config file (with username, password, secrets etc)
-config.js
+/config.js
 
 *.gz
 *.log
