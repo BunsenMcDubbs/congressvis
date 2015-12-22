@@ -11,10 +11,10 @@ def importSubjects(cnx, filepath):
     print 'importing subjects', filepath
     tree = ET.parse(filepath)
     root = tree.getroot()
-    add_subject = "INSERT INTO subject " \
+    add_subject = "INSERT INTO subjects " \
         "(subject_top_term, subject) " \
         "VALUES (%s, %s)"
-    add_subject_top_term = "INSERT INTO subject " \
+    add_subject_top_term = "INSERT INTO subjects " \
         "(subject_top_term) " \
         "VALUES (%s)"
     cursor = cnx.cursor()
@@ -30,7 +30,7 @@ def importSubjects(cnx, filepath):
 
 def importSessions(cnx, filepath):
     print 'importing sessions', filepath
-    add_session = "INSERT INTO congress (`congress_id`, `start`, `end`) " \
+    add_session = "INSERT INTO congresses (`congress_id`, `start`, `end`) " \
         "VALUES (%s, %s, %s)"
     cursor = cnx.cursor()
 
@@ -57,13 +57,13 @@ def importSessions(cnx, filepath):
 def importMembers(cnx, filepath):
     print 'importing members', filepath
     # TODO change to use a proxy dict like in importBills
-    add_member = "INSERT INTO member " \
+    add_member = "INSERT INTO members " \
         "(bioguide_id, govtrack_id, thomas_id, lis_id, first_name, last_name, gender, birthday) " \
         "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    add_term = "INSERT INTO term " \
+    add_term = "INSERT INTO terms " \
         "(member_bioguide_id, state, district, start, end, party, type) " \
         "VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    get_member = "SELECT bioguide_id FROM member WHERE bioguide_id = %s LIMIT 1"
+    get_member = "SELECT bioguide_id FROM members WHERE bioguide_id = %s LIMIT 1"
     cursor = cnx.cursor()
 
     with open(filepath, 'r') as f:
@@ -96,15 +96,15 @@ def importBills(cnx, filepath, elasticsearch_url=None):
     print 'import bills', filepath
     num_bills_processed = 0
 
-    add_bill = "INSERT INTO bill " \
+    add_bill = "INSERT INTO bills " \
         "(bill_id, bill_type, congress, number, official_title, popular_title, short_title, introduced_at, active, vetoed, enacted, awaiting_signature, status, status_at, sponsor_thomas_id, subject_top_term_id) " \
         "VALUES (%(bill_id)s, %(bill_type)s, %(congress)s, %(number)s, %(official_title)s, %(popular_title)s, %(short_title)s, %(introduced_at)s, %(active)s, %(vetoed)s, %(enacted)s, %(awaiting_signature)s, %(status)s, %(status_at)s, %(sponsor_thomas_id)s, %(subject_top_term_id)s)"
-    add_sponsor = "INSERT INTO bill_sponsor " \
+    add_sponsor = "INSERT INTO bill_sponsors " \
         "(member_thomas_id, bill_id, sponsored_at, withdrawn_at, primary_sponsor) " \
         "VALUES (%s, %s, %s, %s, %s)"
-    add_subject = "INSERT INTO bill_subject (subject_id, bill_id) VALUES (%s, %s)"
-    get_subject_top_term_id = "SELECT subject_id FROM subject WHERE subject_top_term = %s AND subject is NULL LIMIT 1"
-    get_subject_id = "SELECT subject_id FROM subject where subject = %s LIMIT 1"
+    add_subject = "INSERT INTO bill_subjects (subject_id, bill_id) VALUES (%s, %s)"
+    get_subject_top_term_id = "SELECT subject_id FROM subjects WHERE subject_top_term = %s AND subject is NULL LIMIT 1"
+    get_subject_id = "SELECT subject_id FROM subjects where subject = %s LIMIT 1"
 
     cursor = cnx.cursor()
     copy_fields = ['bill_id', 'bill_type', 'congress', 'number', 'official_title', 'popular_title', 'short_title', 'introduced_at', 'active', 'vetoed', 'enacted', 'awaiting_signature', 'status', 'status_at', 'sponsor_thomas_id', 'subject_top_term_id']
@@ -153,7 +153,7 @@ def importBills(cnx, filepath, elasticsearch_url=None):
     cursor.close()
 
 def importBillText(cnx, url, filepath, bill_info):
-    addBillVersion = "INSERT INTO bill_version " \
+    addBillVersion = "INSERT INTO bill_versions " \
         "(bill_version_id, issued_on, version_code, bill_id) " \
         "VALUES (%(version_id)s, %(issued_on)s, %(version_code)s, %(bill_id)s)"
     cursor = cnx.cursor()
@@ -183,13 +183,13 @@ def importVotes(cnx, filepath):
     print 'import votes', filepath
     num_votes_processed = 0
 
-    add_vote = "INSERT INTO vote " \
+    add_vote = "INSERT INTO votes " \
         "(vote_id, bill_id, date, category, result, question, subject) " \
         "VALUES (%(vote_id)s, %(bill_id)s, %(date)s, %(category)s, %(result)s, %(question)s, %(subject)s)"
-    add_member_vote = "INSERT INTO member_vote " \
+    add_member_vote = "INSERT INTO member_votes " \
         "(member_bioguide_id, vote_id, vote, party, state, display_as) " \
         "VALUES (%(member_bioguide_id)s, %(vote_id)s, %(vote)s, %(party)s, %(state)s, %(display_as)s)"
-    get_member_bioguide_id_by_lis_id = "SELECT bioguide_id FROM member WHERE lis_id = %s"
+    get_member_bioguide_id_by_lis_id = "SELECT bioguide_id FROM members WHERE lis_id = %s"
     cursor = cnx.cursor()
 
     for path in glob.iglob(filepath):

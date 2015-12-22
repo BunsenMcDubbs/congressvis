@@ -254,7 +254,7 @@ AFTER INSERT ON `terms` FOR EACH ROW
 BEGIN
 	declare done int default false;
 	declare fetched_congress_id INT;
-	declare congress_query cursor for select `congress_id` from `congress` where `congress`.`start` <= NEW.end and `congress`.`end` >= NEW.start;
+	declare congress_query cursor for select `congress_id` from `congresses` where `congresses`.`start` <= NEW.end and `congresses`.`end` >= NEW.start;
 	declare continue handler for not found set done = 1;
 
     open congress_query;
@@ -264,7 +264,7 @@ BEGIN
         if done then
 			leave find_congresses;
 		end if;
-        insert into `member_congress` (`member_bioguide_id`, `congress_id`, `term_id`) VALUES(NEW.`member_bioguide_id`, fetched_congress_id, NEW.`term_id`);
+        insert into `member_congresses` (`member_bioguide_id`, `congress_id`, `term_id`) VALUES(NEW.`member_bioguide_id`, fetched_congress_id, NEW.`term_id`);
     end loop;
 
     close congress_query;
@@ -313,4 +313,4 @@ CREATE TABLE `votes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-21 20:05:56
+-- Dump completed on 2015-12-21 22:50:33
