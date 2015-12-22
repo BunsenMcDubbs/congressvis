@@ -151,13 +151,13 @@ CREATE TABLE `member_congresses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `member_notes`
+-- Table structure for table `member_votes`
 --
 
-DROP TABLE IF EXISTS `member_notes`;
+DROP TABLE IF EXISTS `member_votes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `member_notes` (
+CREATE TABLE `member_votes` (
   `member_vote_id` int(11) NOT NULL AUTO_INCREMENT,
   `member_bioguide_id` varchar(20) NOT NULL,
   `vote_id` varchar(20) NOT NULL,
@@ -313,4 +313,4 @@ CREATE TABLE `votes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-21 14:27:44
+-- Dump completed on 2015-12-21 20:05:56
