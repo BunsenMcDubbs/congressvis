@@ -137,4 +137,9 @@ function transformRowToSchema(row, schema) {
   return json;
 }
 
+/**
+ * A singleton object that uses a database connection to lookup and retrieve
+ * member information.
+ * @module api/helpers/MemberHelper
+ */
 module.exports = new MemberHelper();

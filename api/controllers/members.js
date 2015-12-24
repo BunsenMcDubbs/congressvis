@@ -2,17 +2,25 @@ var db = require('../db-connector');
 var member_helper = require('../helpers/member-helper');
 
 /**
+ * API controller for retrieving members
+ * @module api/controllers/members
+ * @requires api/DBConnector
+ * @requires api/helpers/MemberHelper
+ */
+var exports = {};
+
+/**
  * GET all members
  */
-function getMembers(req, res, next) {
+exports.getMembers = function(req, res, next) {
   db.getConnection()
   .then(function(connection) {
-    return member_helper.getMemberByID(null, connection);
+    return member_helper.getMemberByID(connection, null);
   })
   .then(function(results) {
     res.json({ members: results });
   }).catch(next);
-}
+};
 
 /**
  * GET member by id helper
@@ -20,7 +28,7 @@ function getMembers(req, res, next) {
  * @param {?(object | string | string[])} id - id(s) (should only be 1 in
  * this case) of members to get
  */
-function getMemberHelper(id, res, next) {
+function getMemberByIdHelper(id, res, next) {
   db.getConnection()
   .then(function(connection) {
     return member_helper.getMemberByID(connection, id);
@@ -38,30 +46,32 @@ function getMemberHelper(id, res, next) {
 /**
  * GET member by bioguide id, provided in the request parameters
  */
-function getMemberByBioguideId(req, res, next) {
-  getMemberHelper({ bioguide_id: req.params.bioguide_id }, res, next);
-}
+exports.getMemberByBioguideId = function(req, res, next) {
+  getMemberByIdHelper({ bioguide_id: req.params.bioguide_id }, res, next);
+};
+
+exports.getMemberById = exports.getMemberByBioguideId;
 
 /**
  * GET member by thomas id, provided in the request parameters
  */
-function getMemberByThomasId(req, res, next) {
-  getMemberHelper({ thomas_id: req.params.thomas_id }, res, next);
-}
+exports.getMemberByThomasId = function(req, res, next) {
+  getMemberByIdHelper({ thomas_id: req.params.thomas_id }, res, next);
+};
 
 /**
  * GET member by govtrack id, provided in the request parameters
  */
-function getMemberByGovtrackId(req, res, next) {
-  getMemberHelper({ govtrack_id: req.params.govtrack_id }, res, next);
-}
+exports.getMemberByGovtrackId = function(req, res, next) {
+  getMemberByIdHelper({ govtrack_id: req.params.govtrack_id }, res, next);
+};
 
 /**
  * GET member by lis id, provided in the request parameters
  */
-function getMemberByLisId(req, res, next) {
-  getMemberHelper({ lis_id: req.params.lis_id }, res, next);
-}
+exports.getMemberByLisId = function(req, res, next) {
+  getMemberByIdHelper({ lis_id: req.params.lis_id }, res, next);
+};
 
 /**
  * GET member by name, provided in the request parameters
@@ -70,7 +80,7 @@ function getMemberByLisId(req, res, next) {
  * optional: `exact_full=true` in the url query if seeking an exact
  *    full name match (this will take precedence over `exact`)
  */
-function getMemberByName(req, res, next) {
+exports.getMemberByName = function(req, res, next) {
   var name = req.params.name;
   if (!name) {
     var err = new Error('Must provide a name in ByName lookup');
@@ -91,14 +101,6 @@ function getMemberByName(req, res, next) {
     }
     res.json(results);
   }).catch(next);
-}
-
-module.exports = {
-  getMembers: getMembers,
-  getMemberById: getMemberByBioguideId,
-  getMemberByBioguideId: getMemberByBioguideId,
-  getMemberByThomasId: getMemberByThomasId,
-  getMemberByGovtrackId: getMemberByGovtrackId,
-  getMemberByLisId: getMemberByLisId,
-  getMemberByName: getMemberByName
 };
+
+module.exports = exports;

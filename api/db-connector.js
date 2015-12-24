@@ -71,4 +71,8 @@ DBConnector.prototype.stop = function(msg) {
   process.exit(1);
 };
 
+/**
+ * A singleton object that establishes and manages database connections
+ * @module api/DBConnector
+ */
 module.exports = new DBConnector();
