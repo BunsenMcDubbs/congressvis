@@ -1,0 +1,243 @@
+swagger: '2.0'
+info:
+  title: Congressvis API
+  version: 0.0.0
+  license:
+    name: MIT
+    url: 'http://opensource.org/licenses/MIT'
+host: localhost:3000
+basePath: /api
+paths:
+  /:
+    get:
+      summary: Check if the API is responding
+      operationId: hello
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/welcome'
+        default:
+          description: error
+          schema:
+            $ref: '#/definitions/error_message'
+  /members:
+    get:
+      summary: Return all members
+      operationId: getMembers
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/member'
+  '/members/{bioguide_id}':
+    get:
+      summary: Find member by bioguide_id
+      operationId: getMemberById
+      parameters:
+        - in: path
+          name: bioguide_id
+          description: bioguide_id of member to be fetched
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/member'
+        404:
+          description: cannot find member with matching id
+          schema:
+            $ref: '#/definitions/error_message'
+  '/members/byBioguideId/{bioguide_id}':
+    get:
+      summary: Find member by bioguide_id
+      description: Same as `/members/{bioguide_id}`
+      operationId: getMemberByBioguideId
+      parameters:
+        - in: path
+          name: bioguide_id
+          description: bioguide_id of member to be fetched
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/member'
+        404:
+          description: cannot find member with matching id
+          schema:
+            $ref: '#/definitions/error_message'
+  '/members/byThomasId/{thomas_id}':
+    get:
+      summary: Find member by thomas_id
+      operationId: getMemberByThomasId
+      parameters:
+       - in: path
+         name: thomas_id
+         description: thomas_id of member to be fetched
+         required: true
+         type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/member'
+        404:
+          description: cannot find member with matching id
+          schema:
+            $ref: '#/definitions/error_message'
+  '/members/byGovtrackId/{govtrack_id}':
+    get:
+      summary: Find member by govtrack_id
+      operationId: getMemberByGovtrackId
+      parameters:
+       - in: path
+         name: govtrack_id
+         description: govtrack_id of member to be fetched
+         required: true
+         type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/member'
+        404:
+          description: cannot find member with matching id
+          schema:
+            $ref: '#/definitions/error_message'
+  '/members/byLisId/{lis_id}':
+    get:
+      summary: Find member by lis_id (only senators have this id)
+      operationId: getMemberByLisId
+      parameters:
+       - in: path
+         name: lis_id
+         description: lis_id of member to be fetched
+         required: true
+         type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/member'
+        404:
+          description: cannot find member with matching id
+          schema:
+            $ref: '#/definitions/error_message'
+  '/members/byName/{name}':
+    get:
+      operationId: getMemberByName
+      parameters:
+       - in: path
+         name: name
+         description: name or partial name of member to find
+         required: true
+         type: string
+       - in: query
+         name: exact
+         description: whether or not to treat as an exact match
+          (for first or last or full name)
+         required: false
+         type: boolean
+       - in: query
+         name: exact_full
+         description: whether or not to treat as an exact match for 
+          **full name**, this takes precedence over `exact`
+         required: false
+         type: boolean
+      responses:
+        200:
+          description: successful operation, return with 0+ matches
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/member'
+        404:
+          description: cannot find member with matching name (will only happen
+            if `exact` or `exact_full` is `true`
+          schema:
+            $ref: '#/definitions/error_message'
+definitions:
+  welcome:
+    type: object
+    required:
+      - message
+      - ok
+    properties:
+      message:
+        type: string
+      ok:
+        type: boolean
+  error_message:
+    type: object
+    required:
+      - message
+      - error
+    properties:
+      message:
+        type: string
+      error:
+        type: object
+        required:
+          - status
+        properties:
+          status:
+            type: integer
+            format: int32
+          stack:
+            description: 'only present when the server is in development mode'
+            type: string
+  member:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: object
+        required:
+          - bioguide_id
+          - thomas_id
+          - govtrack_id
+        properties:
+          bioguide_id:
+            $ref: '#/definitions/bioguide_id'
+          thomas_id:
+            $ref: '#/definitions/thomas_id'
+          govtrack_id:
+            $ref: '#/definitions/govtrack_id'
+          lis_id:
+            $ref: '#/definitions/lis_id'
+      name:
+        type: object
+        required:
+          - first-name
+          - last-name
+        properties:
+          first-name:
+            type: string
+          last-name:
+            type: string
+  bioguide_id:
+    type: string
+    description:
+      This is the primary id for all Congress members
+      from http://bioguide.congress.gov/
+  thomas_id:
+    type: string
+    description:
+      Id for all Congress members
+      from https://www.congress.gov/
+  govtrack_id:
+    type: string
+    description:
+      Id for all Congress members
+      from https://www.govtrack.us/
+  lis_id:
+    type: string
+    description:
+      Id only for Senators, used in voting records
