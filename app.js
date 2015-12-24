@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
 var routes = require('./routes/index');
-var api_routes = new (require('./routes/api'))().createRouter();
+var api_routes = require('./routes/api');
 
 var app = express();
 
@@ -82,7 +82,7 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   if (res.get('Content-Type') === 'application/json') {
-    res.json({ message: err.message });
+    res.json({ message: err.message, error: err });
   } else {
     res.render('error', {
       message: err.message,
