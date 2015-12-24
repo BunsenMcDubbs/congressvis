@@ -2,11 +2,17 @@ swagger: '2.0'
 info:
   title: Congressvis API
   version: 0.0.0
+  contact:
+    name: Andrew Dai
+    email: 'adai@gatech.edu'
   license:
     name: MIT
     url: 'http://opensource.org/licenses/MIT'
 host: localhost:3000
 basePath: /api
+tags:
+  - name: members
+    description: find and filter information about members of Congress
 paths:
   /:
     get:
@@ -25,6 +31,8 @@ paths:
     get:
       summary: Return all members
       operationId: getMembers
+      tags:
+        - members
       responses:
         200:
           description: successful operation
@@ -36,6 +44,8 @@ paths:
     get:
       summary: Find member by bioguide_id
       operationId: getMemberById
+      tags:
+        - members
       parameters:
         - in: path
           name: bioguide_id
@@ -56,6 +66,8 @@ paths:
       summary: Find member by bioguide_id
       description: Same as `/members/{bioguide_id}`
       operationId: getMemberByBioguideId
+      tags:
+        - members
       parameters:
         - in: path
           name: bioguide_id
@@ -75,6 +87,8 @@ paths:
     get:
       summary: Find member by thomas_id
       operationId: getMemberByThomasId
+      tags:
+        - members
       parameters:
        - in: path
          name: thomas_id
@@ -94,6 +108,8 @@ paths:
     get:
       summary: Find member by govtrack_id
       operationId: getMemberByGovtrackId
+      tags:
+        - members
       parameters:
        - in: path
          name: govtrack_id
@@ -113,6 +129,8 @@ paths:
     get:
       summary: Find member by lis_id (only senators have this id)
       operationId: getMemberByLisId
+      tags:
+        - members
       parameters:
        - in: path
          name: lis_id
@@ -130,7 +148,10 @@ paths:
             $ref: '#/definitions/error_message'
   '/members/byName/{name}':
     get:
+      summary: Find member(s) by name
       operationId: getMemberByName
+      tags:
+        - members
       parameters:
        - in: path
          name: name
@@ -145,7 +166,7 @@ paths:
          type: boolean
        - in: query
          name: exact_full
-         description: whether or not to treat as an exact match for 
+         description: whether or not to treat as an exact match for
           **full name**, this takes precedence over `exact`
          required: false
          type: boolean
