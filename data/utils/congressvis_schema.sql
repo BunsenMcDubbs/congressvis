@@ -36,7 +36,7 @@ CREATE TABLE `bill_sponsors` (
   KEY `member_thomas_id_idx` (`member_thomas_id`),
   CONSTRAINT `bill_sponsor_bill_id_fk` FOREIGN KEY (`bill_id`) REFERENCES `bills` (`bill_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `thomas_id_fk` FOREIGN KEY (`member_thomas_id`) REFERENCES `members` (`thomas_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=445675 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,7 +55,7 @@ CREATE TABLE `bill_subjects` (
   KEY `subject_id_fk_idx` (`subject_id`),
   CONSTRAINT `bill_id_fk` FOREIGN KEY (`bill_id`) REFERENCES `bills` (`bill_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `subject_id_fk` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=184019 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `member_congresses` (
   CONSTRAINT `member_congress_bioguide_id_fk` FOREIGN KEY (`member_bioguide_id`) REFERENCES `members` (`bioguide_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `member_congress_congress_id_fk` FOREIGN KEY (`congress_id`) REFERENCES `congresses` (`congress_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `member_congress_term_id_fk` FOREIGN KEY (`term_id`) REFERENCES `terms` (`term_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=118177 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +170,7 @@ CREATE TABLE `member_votes` (
   KEY `bioguide_id_idx` (`member_bioguide_id`),
   CONSTRAINT `bioguide_id_fk` FOREIGN KEY (`member_bioguide_id`) REFERENCES `members` (`bioguide_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `vote_id_fk` FOREIGN KEY (`vote_id`) REFERENCES `votes` (`vote_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1846164 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +210,7 @@ CREATE TABLE `subjects` (
   `subject_top_term` varchar(150) NOT NULL,
   PRIMARY KEY (`subject_id`),
   KEY `subject_top_term` (`subject_top_term`)
-) ENGINE=InnoDB AUTO_INCREMENT=2195 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +238,7 @@ CREATE TABLE `terms` (
   KEY `type_party_INDEX` (`type`,`party`),
   KEY `member_bioguide_id_fk` (`member_bioguide_id`),
   CONSTRAINT `member_bioguide_id_fk` FOREIGN KEY (`member_bioguide_id`) REFERENCES `members` (`bioguide_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=86007 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -254,7 +254,7 @@ AFTER INSERT ON `terms` FOR EACH ROW
 BEGIN
 	declare done int default false;
 	declare fetched_congress_id INT;
-	declare congress_query cursor for select `congress_id` from `congresses` where `congresses`.`start` <= NEW.end and `congresses`.`end` >= NEW.start;
+	declare congress_query cursor for select `congress_id` from `congresses` where `congresses`.`start` < NEW.end and `congresses`.`end` >= NEW.start;
 	declare continue handler for not found set done = 1;
 
     open congress_query;
@@ -303,6 +303,44 @@ CREATE TABLE `votes` (
 --
 -- Dumping routines for database 'congressvis'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `getCongressMembers` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCongressMembers`(IN `@input_congress` INT)
+BEGIN
+DECLARE `@selected_congress` INT;
+SET `@selected_congress` = `@input_congress`;
+SELECT
+        `members`.`bioguide_id` AS `bioguide_id`,
+        `members`.`govtrack_id` AS `govtrack_id`,
+        `members`.`thomas_id` AS `thomas_id`,
+        `members`.`lis_id` AS `lis_id`,
+        `members`.`first_name` AS `first_name`,
+        `members`.`last_name` AS `last_name`,
+        `members`.`name` AS `name`,
+        `terms`.`party` AS `party`,
+        `terms`.`type` AS `type`,
+        `terms`.`state` AS `state`,
+        `terms`.`district` AS `district`,
+        `member_congresses`.`congress_id` AS `congress`
+	FROM
+		((`members`
+		JOIN `member_congresses` ON ((`members`.`bioguide_id` = `member_congresses`.`member_bioguide_id`)))
+		JOIN `terms` ON ((`terms`.`term_id` = `member_congresses`.`term_id`)))
+	WHERE `member_congresses`.`congress_id` = `@selected_congress`;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -313,4 +351,4 @@ CREATE TABLE `votes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-21 22:50:33
+-- Dump completed on 2015-12-25  2:22:05
