@@ -1,11 +1,14 @@
 var db = require('../db-connector');
-var member_helper = require('../helpers/member-helper');
+var MemberHelper = require('../helpers/member-helper');
+
+var CongressController = require('./congress');
 
 /**
  * API controller for retrieving members
  * @module api/controllers/members
  * @requires api/DBConnector
  * @requires api/helpers/MemberHelper
+ * @requires api/controllers/congress
  */
 var exports = {};
 
@@ -15,7 +18,7 @@ var exports = {};
 exports.getMembers = function(req, res, next) {
   db.getConnection()
   .then(function(connection) {
-    return member_helper.getMemberByID(connection, null);
+    return MemberHelper.getMemberByID(connection, null);
   })
   .then(function(results) {
     res.json({ members: results });
@@ -31,7 +34,7 @@ exports.getMembers = function(req, res, next) {
 function getMemberByIdHelper(id, res, next) {
   db.getConnection()
   .then(function(connection) {
-    return member_helper.getMemberByID(connection, id);
+    return MemberHelper.getMemberByID(connection, id);
   })
   .then(function(results) {
     if (!results || results.length === 0) {
@@ -91,7 +94,7 @@ exports.getMemberByName = function(req, res, next) {
   var mode = req.query.exact_full ? 2 : (req.query.exact ? 1 : 0);
   db.getConnection()
   .then(function(connection) {
-    return member_helper.getMemberByName(connection, name, mode);
+    return MemberHelper.getMemberByName(connection, name, mode);
   })
   .then(function(results) {
     if (mode !== 0 && (!results || results.length === 0)) {
@@ -102,5 +105,7 @@ exports.getMemberByName = function(req, res, next) {
     res.json(results);
   }).catch(next);
 };
+
+exports.getMembersByCongress = CongressController.getCongressMembers;
 
 module.exports = exports;

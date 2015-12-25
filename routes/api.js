@@ -3,6 +3,7 @@ var cors = require('cors');
 
 var hello = require('../api/controllers/hello');
 var members = require('../api/controllers/members');
+var congress = require('../api/controllers/congress');
 
 router = express.Router();
 
@@ -39,7 +40,13 @@ router.get('/members/byGovtrackId/:govtrack_id', members.getMemberByGovtrackId);
 /** GET member by lis_id */
 router.get('/members/byLisId/:lis_id', members.getMemberByLisId);
 
-/** GET member by name */
+/** GET member(s) by name */
 router.get('/members/byName/:name', members.getMemberByName);
+
+/** GET member(s) by congress */
+router.get('/members/byCongress/:congress', members.getMembersByCongress);
+
+/** GET member by name */
+router.get('/congress/:congress/members', congress.getCongressMembers);
 
 module.exports = router;
