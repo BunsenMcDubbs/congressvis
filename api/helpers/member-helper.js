@@ -2,6 +2,9 @@ var mysql = require('mysql');
 var Q = require('q');
 var _ = require('underscore');
 
+var schema = require('../swagger/member.json');
+var transform = require('./transformer');
+
 /**
  * Helper class for converting and retrieving members to/from the database
  * @constructor
@@ -94,48 +97,23 @@ MemberHelper.prototype.getMemberByName = function(connection, name, mode) {
   return deferred.promise;
 };
 
-var jsonSchema = {
-  id: ['bioguide_id', 'thomas_id', 'govtrack_id', 'lis_id'],
-  name: ['first_name', 'last_name']
-};
+function transformMembers(rows) {
+  if (Array.isArray(rows)) {
+    return _.map(rows, function(row) { return transform.rowToSchema(row, schema); });
+  } else {
+    return transform.rowToSchema(row, schema);
+  }
+}
 
-// define a constant variable
-Object.defineProperty(MemberHelper, 'jsonSchema', {
-  value: jsonSchema
-});
+MemberHelper.prototype.schema = schema;
 
 /**
  * Transform normalized database rows to JSON
- * @private
+ * @function
  * @param {( MemberRow | MemberRow[] )} rows - flat object(s) returned by database
+ * @returns {( Member | Member[] )} inflated member objects(s)
  */
-function transformMembers(rows) {
-  if (Array.isArray(rows)) {
-    return _.map(rows, function(row) { return transformRowToSchema(row, jsonSchema); });
-  } else {
-    return transformRowToSchema(row, jsonSchema);
-  }
-}
-
-/**
- * Transform normalized database row to JSON
- * @todo move this to a seperate helper
- * @private
- * @param { Row } row - flat object returned by database
- * @param { Schema } schema - object indicating the format of final json object
- */
-function transformRowToSchema(row, schema) {
-  var json = {};
-  for (var i in schema) {
-    for (var j in schema[i]) {
-      json[i] = json[i] || {};
-
-      var field_name = schema[i][j];
-      json[i][field_name] = row[field_name];
-    }
-  }
-  return json;
-}
+MemberHelper.prototype.transformMembers = transformMembers;
 
 /**
  * A singleton object that uses a database connection to lookup and retrieve

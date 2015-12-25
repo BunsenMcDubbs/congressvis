@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "required": [
+    "id",
+    "name"
+  ],
+  "properties": {
+    "id": {
+      "type": "object",
+      "required": [
+        "bioguide_id",
+        "govtrack_id"
+      ],
+      "properties": {
+        "bioguide_id": {
+          "type": "string",
+          "description": "This is the primary id for all Congress members from http://bioguide.congress.gov/\n"
+        },
+        "thomas_id": {
+          "type": "string",
+          "description": "Id for all Congress members from https://www.congress.gov/\n"
+        },
+        "govtrack_id": {
+          "type": "string",
+          "description": "Id for all Congress members from https://www.govtrack.us/\n"
+        },
+        "lis_id": {
+          "type": "string",
+          "description": "Id only for Senators, used in voting records"
+        }
+      }
+    },
+    "name": {
+      "type": "object",
+      "required": [
+        "first-name",
+        "last-name"
+      ],
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      }
+    },
+    "party": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "district": {
+      "type": "integer"
+    }
+  }
+}
