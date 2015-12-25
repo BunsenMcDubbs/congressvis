@@ -10,7 +10,7 @@ var congress_helper = require('../helpers/congress-helper');
 var exports = {};
 
 /**
- * GET congress members by congress, which congress indicated in req params
+ * GET members by congress, which congress indicated in req params
  */
 exports.getCongressMembers = function(req, res, next) {
   db.getConnection()

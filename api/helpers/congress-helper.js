@@ -30,4 +30,10 @@ CongressHelper.prototype.getCongressMembers = function(connection, congress) {
   return deferred.promise;
 };
 
+/**
+ * A singleton object that uses a database connection to retrieve information
+ * about congress information
+ * @module api/helpers/CongressHelper
+ * @see CongressHelper
+ */
 module.exports = new CongressHelper();

@@ -119,5 +119,6 @@ MemberHelper.prototype.transformMembers = transformMembers;
  * A singleton object that uses a database connection to lookup and retrieve
  * member information.
  * @module api/helpers/MemberHelper
+ * @see MemberHelper
  */
 module.exports = new MemberHelper();

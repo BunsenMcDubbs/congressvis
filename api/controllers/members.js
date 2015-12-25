@@ -106,6 +106,11 @@ exports.getMemberByName = function(req, res, next) {
   }).catch(next);
 };
 
+/**
+ * GET members by congress, provided in the request parameters
+ * (delegates to the getCongressMembers function in congress controller)
+ * @function
+ */
 exports.getMembersByCongress = CongressController.getCongressMembers;
 
 module.exports = exports;
