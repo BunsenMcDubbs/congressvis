@@ -1,6 +1,6 @@
 /**
  * Transform between normalized database rows and nested JSON
- * @module api/helpers/transformer
+ * @module api/utils/transformer
  */
 var exports = {};
 

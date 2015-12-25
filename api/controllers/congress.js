@@ -1,10 +1,10 @@
-var db = require('../db-connector');
+var db = require('../utils/db-connector');
 var congress_helper = require('../helpers/congress-helper');
 
 /**
  * API controller for retrieving information about Congresses
  * @module api/controllers/congress
- * @requires api/DBConnector
+ * @requires api/utils/DBConnector
  * @requires api/helpers/CongressHelper
  */
 var exports = {};

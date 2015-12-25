@@ -1,9 +1,9 @@
-var db = require('../db-connector');
+var db = require('../utils/db-connector');
 
 /**
  * API controller for returning a welcome message after checking db connections
  * @module api/controllers/hello
- * @requires api/DBConnector
+ * @requires api/utils/DBConnector
  */
 var exports = {};
 

@@ -31,8 +31,8 @@ CongressHelper.prototype.getCongressMembers = function(connection, congress) {
 };
 
 /**
- * A singleton object that uses a database connection to retrieve information
- * about congress information
+ * A singleton instance of CongressHelper that uses a database connection to
+ * lookup and retrieve information about congresses.
  * @module api/helpers/CongressHelper
  * @see CongressHelper
  */

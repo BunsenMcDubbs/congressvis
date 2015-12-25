@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 var Q = require('q');
 
-var config = require('../config').mysql || {};
+var config = require('../../config').mysql || {};
 
 /**
  * Handles connections to the database (MySQL and TODO Elasticsearch)
@@ -72,8 +72,8 @@ DBConnector.prototype.stop = function(msg) {
 };
 
 /**
- * A singleton object that establishes and manages database connections
- * @module api/DBConnector
+ * A singleton instance of DBConnector that establishes and manages database connections
+ * @module api/utils/DBConnector
  * @see DBConnector
  */
 module.exports = new DBConnector();

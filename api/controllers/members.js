@@ -1,4 +1,4 @@
-var db = require('../db-connector');
+var db = require('../utils/db-connector');
 var MemberHelper = require('../helpers/member-helper');
 
 var CongressController = require('./congress');
@@ -6,7 +6,7 @@ var CongressController = require('./congress');
 /**
  * API controller for retrieving members
  * @module api/controllers/members
- * @requires api/DBConnector
+ * @requires api/utils/DBConnector
  * @requires api/helpers/MemberHelper
  * @requires api/controllers/congress
  */

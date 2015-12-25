@@ -3,7 +3,7 @@ var Q = require('q');
 var _ = require('underscore');
 
 var schema = require('../swagger/member.json');
-var transform = require('./transformer');
+var transform = require('../utils/transformer');
 
 /**
  * Helper class for converting and retrieving members to/from the database
@@ -116,8 +116,8 @@ MemberHelper.prototype.schema = schema;
 MemberHelper.prototype.transformMembers = transformMembers;
 
 /**
- * A singleton object that uses a database connection to lookup and retrieve
- * member information.
+ * A singleton instance of MemberHelper that uses a database connection to
+ * lookup and retrieve information about members.
  * @module api/helpers/MemberHelper
  * @see MemberHelper
  */
