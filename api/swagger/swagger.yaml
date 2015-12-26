@@ -177,11 +177,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/member'
-        404:
-          description: cannot find member with matching name (will only happen
-            if `exact` or `exact_full` is `true`
-          schema:
-            $ref: '#/definitions/error_message'
   '/members/byCongress/{congress}':
     get:
       summary: List members by congress

@@ -86,11 +86,6 @@ exports.getMemberByName = function(req, res, next) {
   var mode = req.query.exact_full ? 2 : (req.query.exact ? 1 : 0);
   MemberHelper.getMemberByName(name, mode)
   .then(function(results) {
-    if (mode !== 0 && (!results || results.length === 0)) {
-      var err = new Error('Could not find an exact name match for "' + name + '"');
-      err.status = 404;
-      throw err;
-    }
     res.json(results);
   }).catch(next);
 };
