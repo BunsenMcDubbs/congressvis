@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "required": [
+    "message",
+    "error"
+  ],
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "error": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "stack": {
+          "description": "only present when the server is in development mode",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

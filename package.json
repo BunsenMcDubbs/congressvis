@@ -16,10 +16,14 @@
     "mysql": "^2.10.0",
     "q": "^1.4.1",
     "serve-favicon": "~2.3.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "z-schema": "^3.16.1"
   },
   "devDependencies": {
+    "chai": "^3.4.1",
     "jsdoc": "^3.4.0",
+    "mocha": "^2.2.5",
+    "supertest": "^1.1.0",
     "swagger": "^0.7.5"
   }
 }
