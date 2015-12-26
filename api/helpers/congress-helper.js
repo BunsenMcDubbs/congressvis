@@ -19,16 +19,24 @@ function CongressHelper() {}
  * @returns { Promise } a promise that will resolve with a list of members
  */
 CongressHelper.prototype.getCongressMembers = function(congress) {
+  var query = 'SELECT congress_id FROM congresses WHERE congress_id = ' + congress;
   var call = 'CALL getCongressMembers(' + congress + ')';
   var deferred = Q.defer();
   db.getConnection().then(function (connection) {
-    connection.query(call, function(err, rows) {
-      if (err) { deferred.reject(err); }
-      else {
-        // rows[0] -> result rows, rows[1] -> status
-        deferred.resolve(MemberHelper.transformMembers(rows[0]));
+    connection.query(query, function(err, rows) {
+      if (!rows || rows.length === 0) {
+        connection.release();
+        deferred.reject([]); // send back an empty array to rejection
+      } else {
+        connection.query(call, function(err, res) {
+          if (err) { deferred.reject(err); }
+          else {
+            // res[0] -> result rows, res[1] -> status
+            deferred.resolve(MemberHelper.transformMembers(res[0]));
+          }
+          connection.release();
+        });
       }
-      connection.release();
     });
   });
   return deferred.promise;
