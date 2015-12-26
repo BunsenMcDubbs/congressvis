@@ -63,6 +63,13 @@ DBConnector.prototype.getConnection = function(tries) {
 };
 
 /**
+ * Escape strings
+ * @function
+ * @see node-mysql's escape function
+ */
+DBConnector.prototype.escape = mysql.escape;
+
+/**
  * Log an error message and stop the process
  * @param { String } msg - error message
  */

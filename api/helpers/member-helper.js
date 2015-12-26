@@ -5,15 +5,17 @@ var _ = require('underscore');
 var schema = require('../swagger/member.json');
 var transform = require('../utils/transformer');
 
+var db = require('../utils/db-connector');
+
 /**
  * Helper class for converting and retrieving members to/from the database
  * @constructor
+ * @requires api/utils/db-connector
  */
 function MemberHelper() {}
 
 /**
  * Retrieve member(s) based on id
- * @param { Connection } connection - open MySQL connection
  * @param {?(string | string[] | Object)} id - one or more ids
  *
  *  - `(string | string[])` bioguide id(s), array will retrieve multiple
@@ -31,7 +33,7 @@ function MemberHelper() {}
  *  - `null` will retrieve all
  * @returns { Promise } a promise that will resolve with a list of members
  */
-MemberHelper.prototype.getMemberByID = function(connection, id) {
+MemberHelper.prototype.getMemberByID = function(id) {
   var id_types = ['bioguide_id', 'thomas_id', 'govtrack_id', 'lis_id'];
   // build query
   var query = 'SELECT * FROM members';
@@ -49,7 +51,7 @@ MemberHelper.prototype.getMemberByID = function(connection, id) {
     for (var i = 0; i < given_id_types.length; i++) {
       var id_type = given_id_types[i];
       if (id_types.indexOf(id_type) !== -1) {
-        query += id_type + ' IN (' + connection.escape(id[id_type]) + ')';
+        query += id_type + ' IN (' + db.escape(id[id_type]) + ')';
       }
       if (i < given_id_types.length - 1) { query += ' OR '; }
     }
@@ -57,18 +59,20 @@ MemberHelper.prototype.getMemberByID = function(connection, id) {
 
   // query database for members
   var deferred = Q.defer();
-  connection.query(query, function(err, rows) {
-    if (err) { deferred.reject(err); }
-    else {
-      deferred.resolve(transformMembers(rows));
-    }
+  db.getConnection().then(function(connection) {
+    connection.query(query, function(err, rows) {
+      if (err) { deferred.reject(err); }
+      else {
+        deferred.resolve(transformMembers(rows));
+      }
+    });
+    connection.release();
   });
   return deferred.promise;
 };
 
 /**
  * Retrieve member(s) based on name
- * @param { Connection } connection - open MySQL connection
  * @param { string } name - name or name fragment to look for
  * @param { number } [mode=0] - which degree of exact-ness to match the name
  *  - 0: any partial match
@@ -76,7 +80,7 @@ MemberHelper.prototype.getMemberByID = function(connection, id) {
  *  - 2: exact match on full name
  * @returns { Promise } a promise that will resolve with an array of members
  */
-MemberHelper.prototype.getMemberByName = function(connection, name, mode) {
+MemberHelper.prototype.getMemberByName = function(name, mode) {
   mode = mode || 0;
   var query = 'SELECT * FROM members WHERE name';
   if (mode == 2) {
@@ -88,12 +92,16 @@ MemberHelper.prototype.getMemberByName = function(connection, name, mode) {
     query += ' LIKE \'%' + name + '%\'';
   }
   var deferred = Q.defer();
-  connection.query(query, function(err, rows) {
-    if (err) { deferred.reject(err); }
-    else {
-      deferred.resolve(transformMembers(rows));
-    }
+  db.getConnection().then(function(connection) {
+    connection.query(query, function(err, rows) {
+      if (err) { deferred.reject(err); }
+      else {
+        deferred.resolve(transformMembers(rows));
+      }
+    });
+    connection.release();
   });
+
   return deferred.promise;
 };
 

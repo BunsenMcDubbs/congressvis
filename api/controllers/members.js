@@ -1,4 +1,3 @@
-var db = require('../utils/db-connector');
 var MemberHelper = require('../helpers/member-helper');
 
 var CongressController = require('./congress');
@@ -6,7 +5,6 @@ var CongressController = require('./congress');
 /**
  * API controller for retrieving members
  * @module api/controllers/members
- * @requires api/utils/DBConnector
  * @requires api/helpers/MemberHelper
  * @requires api/controllers/congress
  */
@@ -16,10 +14,7 @@ var exports = {};
  * GET all members
  */
 exports.getMembers = function(req, res, next) {
-  db.getConnection()
-  .then(function(connection) {
-    return MemberHelper.getMemberByID(connection, null);
-  })
+  MemberHelper.getMemberByID(null)
   .then(function(results) {
     res.json(results);
   }).catch(next);
@@ -32,10 +27,7 @@ exports.getMembers = function(req, res, next) {
  * this case) of members to get
  */
 function getMemberByIdHelper(id, res, next) {
-  db.getConnection()
-  .then(function(connection) {
-    return MemberHelper.getMemberByID(connection, id);
-  })
+  MemberHelper.getMemberByID(id)
   .then(function(results) {
     if (!results || results.length === 0) {
       var err = new Error('No member found with id: ' + JSON.stringify(id));
@@ -92,10 +84,7 @@ exports.getMemberByName = function(req, res, next) {
   }
   // mode 2 if `exact_full`, mode 1 if `exact`, else mode 0
   var mode = req.query.exact_full ? 2 : (req.query.exact ? 1 : 0);
-  db.getConnection()
-  .then(function(connection) {
-    return MemberHelper.getMemberByName(connection, name, mode);
-  })
+  MemberHelper.getMemberByName(name, mode)
   .then(function(results) {
     if (mode !== 0 && (!results || results.length === 0)) {
       var err = new Error('Could not find an exact name match for "' + name + '"');
