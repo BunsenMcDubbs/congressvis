@@ -23,13 +23,16 @@ DBConnector.prototype.initializeConnectionPool = function() {
     user : config.username || 'root',
     password : config.password || '',
     database : config.database || 'congressvis'
+    // waitForConnections: false // this is a development setting to help debug bad resource management
   });
   var deferred = Q.defer();
-  self.getConnection(1).then(
+  self.getConnection().then(
     function(connection) {
       connection.release();
       deferred.resolve();
-    }, function() {
+    }, function(err) {
+      // TODO this code is untested
+      console.warn(err);
       self.pool = null;
       deferred.reject('PROBLEM ESTABLISHING MYSQL CONNECTION.');
   });
@@ -40,26 +43,12 @@ DBConnector.prototype.initializeConnectionPool = function() {
  * Retrieve a connection from the pool
  * @returns { Promise } a promise that will resolve with a MySQL connnection
  */
-DBConnector.prototype.getConnection = function(tries) {
-  tries = !isNaN(parseInt(tries)) ? tries : 5;
-  var pool = this.pool;
+DBConnector.prototype.getConnection = function() {
   var deferred = Q.defer();
-
-  function helper(tries) {
-    if (tries <= 0) {
-      deferred.reject(new Error('PROBLEM FETCHING CONNECTION FROM POOL'));
-    }
-    else {
-      pool.getConnection(function(err, connection) {
-        if (err) {
-          console.log('failed to get connection');
-          helper(tries - 1);
-        } else { deferred.resolve(connection); }
-      });
-    }
-  }
-  helper(tries);
-
+  this.pool.getConnection(function(err, connection) {
+    if (err) { deferred.reject(err); }
+    else { deferred.resolve(connection); }
+  });
   return deferred.promise;
 };
 
