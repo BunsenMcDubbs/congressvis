@@ -256,7 +256,6 @@ definitions:
         properties:
           status:
             type: integer
-            format: int32
           stack:
             description: 'only present when the server is in development mode'
             type: string

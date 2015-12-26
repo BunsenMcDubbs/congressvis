@@ -15,8 +15,7 @@
       ],
       "properties": {
         "status": {
-          "type": "integer",
-          "format": "int32"
+          "type": "integer"
         },
         "stack": {
           "description": "only present when the server is in development mode",
