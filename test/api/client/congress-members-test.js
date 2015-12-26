@@ -11,19 +11,25 @@ var members_schema = { type: 'array' };
 members_schema.items = member_schema;
 
 describe('/congress', function() {
-  describe('{congress}/members', function() {
-    testHelper('/api/congress/113/members', '/api/congress/0/members');
+  describe('/{congress}/members', function() {
+    describe('getCongressMembers', function() {
+      this.slow(150); // tweak the 'slow' criteria to be more accomodating
+      testHelper('/api/congress/113/members', '/api/congress/0/members');
+    });
   });
 });
 
 describe('/members', function() {
   describe('/byCongress/{congress}', function() {
-    testHelper('/api/members/byCongress/113', '/api/members/byCongress/0');
+    describe('getMembersByCongress', function() {
+      this.slow(150);
+      testHelper('/api/members/byCongress/113', '/api/members/byCongress/0');
+    });
   });
 });
 
 function testHelper(valid_url, invalid_url) {
-  it('should respond with a list of all members who serve in that congress (200)',
+  it('should respond with a list of all members from that congress (200)',
     function(done) {
       api.get(valid_url)
       .set('Accept', 'application/json')

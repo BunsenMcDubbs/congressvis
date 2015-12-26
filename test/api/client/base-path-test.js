@@ -21,21 +21,21 @@ describe('/', function() {
       });
     });
 
-    // it('should respond with default error', function(done) {
-    //   api.get('/api/')
-    //   .set('Accept', 'application/json')
-    //   .expect(function(res) {
-    //     if (res.status == 200) {
-    //       return new Error("database should be disconnected and return an error status");
-    //     }
-    //   })
-    //   .end(function(err, res) {
-    //     if (err) return done(err);
-    //
-    //     expect(validator.validate(res.body, error_schema)).to.be.true;
-    //     done();
-    //   });
-    // });
+    it.skip('should respond with default error', function(done) {
+      api.get('/api/')
+      .set('Accept', 'application/json')
+      .expect(function(res) {
+        if (res.status == 200) {
+          return new Error("database should be disconnected and return an error status");
+        }
+      })
+      .end(function(err, res) {
+        if (err) return done(err);
+
+        expect(validator.validate(res.body, error_schema)).to.be.true;
+        done();
+      });
+    });
 
   });
 
