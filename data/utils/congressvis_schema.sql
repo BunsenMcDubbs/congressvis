@@ -254,7 +254,7 @@ AFTER INSERT ON `terms` FOR EACH ROW
 BEGIN
 	declare done int default false;
 	declare fetched_congress_id INT;
-	declare congress_query cursor for select `congress_id` from `congresses` where `congresses`.`start` < NEW.end and `congresses`.`end` >= NEW.start;
+	declare congress_query cursor for select `congress_id` from `congresses` where `congresses`.`start` < NEW.end and `congresses`.`end` > NEW.start;
 	declare continue handler for not found set done = 1;
 
     open congress_query;
