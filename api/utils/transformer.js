@@ -29,8 +29,11 @@ function rowToSchema(row, schema, key) {
     inflated = {};
     var props = schema.properties;
     var required = schema.required || []; // TODO use this in the future
-    for (var prop in props) {
-      inflated[prop] = rowToSchema(row, props[prop], prop);
+    for (var prop_n in props) {
+      var prop = rowToSchema(row, props[prop_n], prop_n);
+      if (prop) {
+        inflated[prop_n] = prop;
+      }
     }
   } else if (row[key]) { // otherwise return the value indicated by the key
     inflated = row[key];
