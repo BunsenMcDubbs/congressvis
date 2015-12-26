@@ -21,7 +21,7 @@ exports.getMembers = function(req, res, next) {
     return MemberHelper.getMemberByID(connection, null);
   })
   .then(function(results) {
-    res.json({ members: results });
+    res.json(results);
   }).catch(next);
 };
 

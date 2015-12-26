@@ -283,8 +283,8 @@ definitions:
       name:
         type: object
         required:
-          - first-name
-          - last-name
+          - first_name
+          - last_name
         properties:
           first_name:
             type: string
