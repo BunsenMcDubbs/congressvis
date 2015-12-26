@@ -26,8 +26,9 @@ DBConnector.prototype.initializeConnectionPool = function() {
   });
   var deferred = Q.defer();
   self.getConnection(1).then(
-    function(pool) {
-      deferred.resolve(pool);
+    function(connection) {
+      connection.release();
+      deferred.resolve();
     }, function() {
       self.pool = null;
       deferred.reject('PROBLEM ESTABLISHING MYSQL CONNECTION.');
@@ -46,7 +47,7 @@ DBConnector.prototype.getConnection = function(tries) {
 
   function helper(tries) {
     if (tries <= 0) {
-      deferred.reject('PROBLEM FETCHING CONNECTION FROM POOL');
+      deferred.reject(new Error('PROBLEM FETCHING CONNECTION FROM POOL'));
     }
     else {
       pool.getConnection(function(err, connection) {

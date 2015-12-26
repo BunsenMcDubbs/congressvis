@@ -67,7 +67,7 @@ MemberHelper.prototype.getMemberByID = function(id) {
       }
     });
     connection.release();
-  });
+  }).catch(deferred.reject);
   return deferred.promise;
 };
 
@@ -100,7 +100,7 @@ MemberHelper.prototype.getMemberByName = function(name, mode) {
       }
     });
     connection.release();
-  });
+  }).catch(deferred.reject);
 
   return deferred.promise;
 };

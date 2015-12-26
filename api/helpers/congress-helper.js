@@ -38,7 +38,7 @@ CongressHelper.prototype.getCongressMembers = function(congress) {
         });
       }
     });
-  });
+  }).catch(deferred.reject);
   return deferred.promise;
 };
 
