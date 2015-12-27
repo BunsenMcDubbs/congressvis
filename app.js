@@ -71,7 +71,7 @@ if (app.get('env') === 'development') {
         error: err
       });
     }
-    if (!err.status || err.status !== 404) {
+    if (!err.status || err.status === 500) {
       console.error(err.stack);
     }
   });
