@@ -303,6 +303,45 @@ CREATE TABLE `votes` (
 --
 -- Dumping routines for database 'congressvis'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `getCongressById` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCongressById`(IN `@input_congress` INT)
+BEGIN
+DECLARE `@selected_congress` INT;
+IF `@input_congress` IS NOT NULL THEN
+	SET `@selected_congress` = `@input_congress`;
+    SELECT
+			`congresses`.`congress_id` AS `congress_id`,
+            `congresses`.`start` AS `start`,
+            `congresses`.`end` AS `end`,
+            COUNT(`member_congresses`.`member_bioguide_id`) AS `num_members`
+		FROM (`congresses`
+			INNER JOIN `member_congresses` ON (`member_congresses`.`congress_id` = `congresses`.`congress_id`))
+		WHERE `congresses`.`congress_id` = `@selected_congress`;
+ELSE
+    SELECT
+			`congresses`.`congress_id` AS `congress_id`,
+            `congresses`.`start` AS `start`,
+            `congresses`.`end` AS `end`,
+            COUNT(`member_congresses`.`member_bioguide_id`) AS `num_members`
+		FROM (`congresses`
+			INNER JOIN `member_congresses` ON (`member_congresses`.`congress_id` = `congresses`.`congress_id`))
+		GROUP BY `congresses`.`congress_id`;
+END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `getCongressMembers` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -351,4 +390,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-25  2:22:05
+-- Dump completed on 2015-12-27 17:39:24
