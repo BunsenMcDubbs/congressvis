@@ -14,6 +14,28 @@ var MemberHelper = require('./member-helper');
 function CongressHelper() {}
 
 /**
+ * Retrieve a list of congresses either by id or all
+ * @param { ?number } congress - congress number, if none provided then
+ * information on all congresses are returned
+ * @returns { Promise } a promise that will resolve with a list of congresses
+ */
+CongressHelper.prototype.getCongress = function(congress) {
+  congress = congress || null;
+  var call;
+  if (congress) {
+    call = 'CALL getCongressById(' + congress + ');';
+  } else {
+    call = 'CALL getCongressById(NULL);';
+  }
+  var deferred = Q.defer();
+  db.pool.query(call, function(err, rows) {
+    if (err) { deferred.reject(err); }
+    else { deferred.resolve(rows[0]); } // no conversion needed, just pick out results
+  });
+  return deferred.promise;
+};
+
+/**
  * Retrieve members that belong/attended a given congress
  * @param { number } congress - congress number to lookup members for
  * @returns { Promise } a promise that will resolve with a list of members

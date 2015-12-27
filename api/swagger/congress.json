@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "required": [
+    "congress_id",
+    "start",
+    "end",
+    "num_members"
+  ],
+  "properties": {
+    "congress_id": {
+      "type": "integer"
+    },
+    "start": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "num_members": {
+      "type": "integer"
+    }
+  }
+}

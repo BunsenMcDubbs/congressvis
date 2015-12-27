@@ -46,6 +46,12 @@ router.get('/members/byName/:name', members.getMemberByName);
 /** GET member(s) by congress */
 router.get('/members/byCongress/:congress', members.getMembersByCongress);
 
+/** GET all congresses */
+router.get('/congress', congress.getCongresses);
+
+/** GET congress by id */
+router.get('/congress/:congress', congress.getCongressById);
+
 /** GET member by name */
 router.get('/congress/:congress/members', congress.getCongressMembers);
 

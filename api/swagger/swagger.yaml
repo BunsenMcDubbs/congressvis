@@ -201,6 +201,41 @@ paths:
           description: cannot find a congress
           schema:
             $ref: '#/definitions/error_message'
+  `/congress`:
+    get:
+      summary: Return all congresses
+      operationId: getCongresses
+      tags:
+        - congress
+      responses:
+        200:
+          description: successful operation, return data on all congresses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/congress'
+  '/congress/{congress}':
+    get:
+      summary: Retrieve congress by id
+      operationId: getCongressById
+      tags:
+        - congress
+      parameters:
+        - in: path
+          name: congress
+          description: id of congress to retrieve
+          required: true
+          type: integer
+      responses:
+        200:
+          description: successful operation, return with data about a congress
+          schema:
+            type:
+              $ref: '#/definitions/congress'
+        404:
+          description: cannot find a congress
+          schema:
+            $ref: '#/definitions/error_message'
   '/congress/{congress}/members':
     get:
       summary: List members by congress
@@ -311,3 +346,21 @@ definitions:
     type: string
     description:
       Id only for Senators, used in voting records
+  congress:
+    type: object
+    required:
+      - congress_id
+      - start
+      - end
+      - num_members
+    properties:
+      congress_id:
+        type: integer
+      start:
+        type: string
+        format: date-time
+      end:
+        type: string
+        format: date-time
+      num_members:
+        type: integer
