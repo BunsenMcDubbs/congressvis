@@ -325,7 +325,8 @@ IF `@input_congress` IS NOT NULL THEN
             COUNT(`member_congresses`.`member_bioguide_id`) AS `num_members`
 		FROM (`congresses`
 			INNER JOIN `member_congresses` ON (`member_congresses`.`congress_id` = `congresses`.`congress_id`))
-		WHERE `congresses`.`congress_id` = `@selected_congress`;
+		WHERE `congresses`.`congress_id` = `@selected_congress`
+        GROUP BY `congresses`.`congress_id`;
 ELSE
     SELECT
 			`congresses`.`congress_id` AS `congress_id`,
@@ -390,4 +391,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-27 17:39:24
+-- Dump completed on 2015-12-27 19:30:04
