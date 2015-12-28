@@ -59,15 +59,10 @@ MemberHelper.prototype.getMemberByID = function(id) {
 
   // query database for members
   var deferred = Q.defer();
-  db.getConnection().then(function(connection) {
-    connection.query(query, function(err, rows) {
-      if (err) { deferred.reject(err); }
-      else {
-        deferred.resolve(transformMembers(rows));
-      }
-    });
-    connection.release();
-  }).catch(deferred.reject);
+  db.pool.query(query, function(err, rows) {
+    if (err) { deferred.reject(err); }
+    else { deferred.resolve(transformMembers(rows)); }
+  });
   return deferred.promise;
 };
 
@@ -92,16 +87,10 @@ MemberHelper.prototype.getMemberByName = function(name, mode) {
     query += ' LIKE \'%' + name + '%\'';
   }
   var deferred = Q.defer();
-  db.getConnection().then(function(connection) {
-    connection.query(query, function(err, rows) {
-      if (err) { deferred.reject(err); }
-      else {
-        deferred.resolve(transformMembers(rows));
-      }
-    });
-    connection.release();
-  }).catch(deferred.reject);
-
+  db.pool.query(query, function(err, rows) {
+    if (err) { deferred.reject(err); }
+    else { deferred.resolve(transformMembers(rows)); }
+  });
   return deferred.promise;
 };
 
