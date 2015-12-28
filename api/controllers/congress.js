@@ -7,12 +7,18 @@ var congress_helper = require('../helpers/congress-helper');
  */
 var exports = {};
 
+/**
+ * GET all congresses
+ */
 exports.getCongresses = function(req, res, next) {
   congress_helper.getCongress()
   .then(function(results) { res.json(results); })
   .catch(next);
 };
 
+/**
+ * GET congress information, which congress indicated in req params
+ */
 exports.getCongressById = function(req, res, next) {
   var congress = req.params.congress;
   congress_helper.getCongress(congress)
@@ -43,6 +49,21 @@ exports.getCongressMembers = function(req, res, next) {
     }
     next(err);
   });
+};
+
+/**
+ * Helper middleware to validate congress id's, passes 400 error otherwise
+ * congress id is indicated in req params as 'congress'
+ */
+exports.validateCongressId = function(req, res, next) {
+  var congress = req.params.congress;
+  if (!parseInt(congress) || congress <= 0) {
+    var err = new Error(JSON.stringify(congress) + ' is not a valid congress id');
+    err.status = 400;
+    next(err);
+  } else {
+    next();
+  }
 };
 
 module.exports = exports;

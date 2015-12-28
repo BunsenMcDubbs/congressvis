@@ -30,6 +30,7 @@ CongressHelper.prototype.getCongress = function(congress) {
   var deferred = Q.defer();
   db.pool.query(call, function(err, rows) {
     if (err) { deferred.reject(err); }
+    else if (rows[0].length === 0) { deferred.reject([]); }
     else { deferred.resolve(rows[0]); } // no conversion needed, just pick out results
   });
   return deferred.promise;

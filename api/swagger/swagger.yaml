@@ -197,6 +197,10 @@ paths:
             type: array
             items:
               $ref: '#/definitions/member'
+        400:
+          description: not a valid congress id
+          schema:
+            $ref: '#/definitions/error_message'
         404:
           description: cannot find a congress
           schema:
@@ -232,8 +236,12 @@ paths:
           schema:
             type:
               $ref: '#/definitions/congress'
+        400:
+          description: not a valid congress id
+          schema:
+            $ref: '#/definitions/error_message'
         404:
-          description: cannot find a congress
+          description: cannot find a matching congress
           schema:
             $ref: '#/definitions/error_message'
   '/congress/{congress}/members':
@@ -256,8 +264,12 @@ paths:
             type: array
             items:
               $ref: '#/definitions/member'
+        400:
+          description: not a valid congress id
+          schema:
+            $ref: '#/definitions/error_message'
         404:
-          description: cannot find a congress
+          description: cannot find a matching congress
           schema:
             $ref: '#/definitions/error_message'
 definitions:
