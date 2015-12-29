@@ -94,6 +94,12 @@ MemberHelper.prototype.getMemberByName = function(name, mode) {
   return deferred.promise;
 };
 
+/**
+ * Helper function to transform database result rows to a nested json object
+ * @private
+ * @param { Row[] } rows
+ * @return inflated json object according to member schema
+ */
 function transformMembers(rows) {
   if (Array.isArray(rows)) {
     return _.map(rows, function(row) { return transform.rowToSchema(row, schema); });
