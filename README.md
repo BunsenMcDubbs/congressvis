@@ -108,7 +108,7 @@ system (e.g. `apt-get` for Ubuntu) or install from official binaries.
 
 8. *???*
 
-9. *Congrats.* ![Cheers](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
+9. *Congrats.* ![Done.](http://giphy.com/gifs/real-housewives-of-orange-county-rhoc-lydia-mclaughlin-TpEaT3bd6nhmw)
 
 ## API Documentation
 
