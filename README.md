@@ -108,7 +108,7 @@ system (e.g. `apt-get` for Ubuntu) or install from official binaries.
 
 8. *???*
 
-9. *Congrats.* ![Done.](http://giphy.com/gifs/real-housewives-of-orange-county-rhoc-lydia-mclaughlin-TpEaT3bd6nhmw)
+9. *Congrats.* ![Done.](https://media.giphy.com/media/TpEaT3bd6nhmw/giphy.gif)
 
 ## API Documentation
 
