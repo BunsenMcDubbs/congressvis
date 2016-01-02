@@ -86,7 +86,7 @@ system (e.g. `apt-get` for Ubuntu) or install from official binaries.
   ```shell
   # at the project root
   npm install
-  
+
   npm install -g bower
   bower install
   ```
@@ -108,7 +108,7 @@ system (e.g. `apt-get` for Ubuntu) or install from official binaries.
 
 8. *???*
 
-9. *Congrats.* ![Done.](https://media.giphy.com/media/TpEaT3bd6nhmw/giphy.gif)
+9. *Congrats.* ![Cheers.](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
 
 ## API Documentation
 
