@@ -25,13 +25,7 @@ exports.getCongressById = function(req, res, next) {
   .then(function(results) {
     res.json(results[0]);
   })
-  .catch(function(err) {
-    if (Array.isArray(err) && err.length === 0) {
-      err = new Error('Cannot find congress #' + req.params.congress);
-      err.status = 404;
-    }
-    next(err);
-  });
+  .catch(next);
 };
 
 /**
@@ -42,13 +36,7 @@ exports.getCongressMembers = function(req, res, next) {
   congress_helper.getCongressMembers(congress)
   .then(function(results) {
     res.json(results);
-  }).catch(function(err) {
-    if (Array.isArray(err) && err.length === 0) {
-      err = new Error('Cannot find congress #' + req.params.congress);
-      err.status = 404;
-    }
-    next(err);
-  });
+  }).catch(next);
 };
 
 /**

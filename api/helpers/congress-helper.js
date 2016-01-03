@@ -30,8 +30,11 @@ CongressHelper.prototype.getCongress = function(congress) {
   var deferred = Q.defer();
   db.pool.query(call, function(err, rows) {
     if (err) { deferred.reject(err); }
-    else if (rows[0].length === 0) { deferred.reject([]); }
-    else { deferred.resolve(rows[0]); } // no conversion needed, just pick out results
+    else if (rows[0].length === 0) {
+      err = new Error('Cannot find congress #' + congress);
+      err.status = 404;
+      deferred.reject(err);
+    } else { deferred.resolve(rows[0]); } // no conversion needed, just pick out results
   });
   return deferred.promise;
 };
@@ -47,9 +50,14 @@ CongressHelper.prototype.getCongressMembers = function(congress) {
   var deferred = Q.defer();
   db.getConnection().then(function (connection) {
     connection.query(query, function(err, rows) {
-      if (!rows || rows.length === 0) {
+      if (err) {
         connection.release();
-        deferred.reject([]); // send back an empty array to rejection
+        deferred.reject(err);
+      } else if (!rows || rows.length === 0) {
+        connection.release();
+        err = new Error('Cannot find congress #' + congress);
+        err.status = 404;
+        deferred.reject(err);
       } else {
         connection.query(call, function(err, res) {
           if (err) { deferred.reject(err); }
