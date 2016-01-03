@@ -1,0 +1,94 @@
+{
+  "type": "object",
+  "required": [
+    "vote_id",
+    "bill_id",
+    "date"
+  ],
+  "properties": {
+    "vote_id": {
+      "type": "string"
+    },
+    "bill_id": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "category": {
+      "type": "string"
+    },
+    "result": {
+      "type": "string"
+    },
+    "question": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "votes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "bioguide_id",
+          "vote",
+          "display_as",
+          "state",
+          "name"
+        ],
+        "properties": {
+          "bioguide_id": {
+            "type": "string",
+            "description": "This is the primary id for all Congress members from http://bioguide.congress.gov/\n"
+          },
+          "vote": {
+            "type": "string",
+            "enum": [
+              "+",
+              "-",
+              "0"
+            ]
+          },
+          "display_as": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "votes_short": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "vote"
+        ],
+        "properties": {
+          "bioguide_id": {
+            "type": "string",
+            "description": "This is the primary id for all Congress members from http://bioguide.congress.gov/\n"
+          },
+          "vote_id": {
+            "type": "string"
+          },
+          "vote": {
+            "type": "string",
+            "enum": [
+              "+",
+              "-",
+              "0"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

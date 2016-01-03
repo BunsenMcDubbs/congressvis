@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "required": [
+    "bioguide_id",
+    "vote",
+    "display_as",
+    "state",
+    "name"
+  ],
+  "properties": {
+    "bioguide_id": {
+      "type": "string",
+      "description": "This is the primary id for all Congress members from http://bioguide.congress.gov/\n"
+    },
+    "vote": {
+      "type": "string",
+      "enum": [
+        "+",
+        "-",
+        "0"
+      ]
+    },
+    "display_as": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    }
+  }
+}
