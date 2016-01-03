@@ -4,6 +4,7 @@ var cors = require('cors');
 var hello = require('../api/controllers/hello');
 var members = require('../api/controllers/members');
 var congress = require('../api/controllers/congress');
+var votes = require('../api/controllers/votes');
 
 router = express.Router();
 
@@ -60,5 +61,7 @@ router.get('/congress/:congress',
 router.get('/congress/:congress/members',
   congress.validateCongressId,
   congress.getCongressMembers);
+
+router.get('/votes/:vote_id', votes.getVoteByVoteId);
 
 module.exports = router;
