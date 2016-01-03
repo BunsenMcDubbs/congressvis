@@ -72,7 +72,7 @@ if (app.get('env') === 'development') {
       });
     }
     if (!err.status || err.status === 500) {
-      console.error(err.stack);
+      console.error('Stack:', err.stack);
     }
   });
 }
