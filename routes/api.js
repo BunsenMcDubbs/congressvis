@@ -62,6 +62,7 @@ router.get('/congress/:congress/members',
   congress.validateCongressId,
   congress.getCongressMembers);
 
+/** GET vote by id */
 router.get('/votes/:vote_id', votes.getVoteByVoteId);
 
 module.exports = router;
