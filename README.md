@@ -143,4 +143,4 @@ and mostly follows standard Express.js conventions.
 ### Database Schema
 
 **Todo:** written documentation for database schema
-![mysql database diagram](data/utils/schema_diagram.png)
+![mysql database diagram](https://raw.githubusercontent.com/BunsenMcDubbs/congressvis/master/data/utils/schema_diagram.png)

@@ -10,7 +10,8 @@ var db = require('../utils/db-connector');
 /**
  * Helper class for converting and retrieving members to/from the database
  * @constructor
- * @requires api/utils/db-connector
+ * @requires api/utils/DBConnector
+ * @requires api/utils/Transformer
  */
 function MemberHelper() {}
 
@@ -95,10 +96,10 @@ MemberHelper.prototype.getMemberByName = function(name, mode) {
 };
 
 /**
- * Helper function to transform database result rows to a nested json object
- * @private
- * @param { Row[] } rows
- * @return inflated json object according to member schema
+ * Transform normalized database rows to JSON
+ * @memberof MemberHelper
+ * @param {( MemberRow | MemberRow[] )} rows - flat object(s) returned by database
+ * @returns {( Member | Member[] )} inflated member objects(s)
  */
 function transformMembers(rows) {
   if (Array.isArray(rows)) {
@@ -108,15 +109,10 @@ function transformMembers(rows) {
   }
 }
 
-MemberHelper.prototype.schema = schema;
-
-/**
- * Transform normalized database rows to JSON
- * @function
- * @param {( MemberRow | MemberRow[] )} rows - flat object(s) returned by database
- * @returns {( Member | Member[] )} inflated member objects(s)
- */
 MemberHelper.prototype.transformMembers = transformMembers;
+
+/** @member { JSONSchema } */
+MemberHelper.prototype.schema = schema;
 
 /**
  * A singleton instance of MemberHelper that uses a database connection to

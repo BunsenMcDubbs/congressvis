@@ -1,5 +1,10 @@
 var vote_helper = require('../helpers/vote-helper');
 
+/**
+ * API controller for retrieving information about congressional votes
+ * @module api/controllers/votes
+ * @requires api/helpers/VoteHelper
+ */
 var exports = {};
 
 /**

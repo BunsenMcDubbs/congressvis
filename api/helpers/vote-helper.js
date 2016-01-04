@@ -10,8 +10,8 @@ var db = require('../utils/db-connector');
 /**
  * Helper class for converting and retrieving congressional votes
  * @constructor
- * @requires api/utils/db-connector
- * @requires api/utils/transformer
+ * @requires api/utils/DBConnector
+ * @requires api/utils/Transformer
  */
 function VoteHelper() {}
 
@@ -53,6 +53,9 @@ VoteHelper.prototype.getVoteByVoteId = function(vote_id, short_votes) {
   });
   return deferred.promise;
 };
+
+/** @member { JSONSchema } */
+VoteHelper.prototype.schema = schema;
 
 /**
  * A singleton instance of VoteHelper

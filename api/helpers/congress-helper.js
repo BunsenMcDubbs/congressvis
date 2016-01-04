@@ -8,8 +8,8 @@ var MemberHelper = require('./member-helper');
 /**
  * Helper class for converting and retrieving congress to/from the database
  * @constructor
- * @requires api/helpers/member-helper
- * @requires api/utils/db-connector
+ * @requires api/helpers/MemberHelper
+ * @requires api/utils/DBConnector
  */
 function CongressHelper() {}
 
