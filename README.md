@@ -110,9 +110,9 @@ system (e.g. `apt-get` for Ubuntu) or install from official binaries.
 
 9. *Congrats.* ![Cheers.](http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif)
 
-## API Documentation
+## [API Documentation](http://bunsenmcdubbs.github.io/congressvis/api/)
 
-**Todo:** write API, then document
+## [Source Documentation](http://bunsenmcdubbs.github.io/congressvis/source/)
 
 ## Project Layout/Filesystem Overview
 
