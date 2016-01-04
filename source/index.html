@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><p>:question::warning::boom: <strong><em>work in progress</em></strong> :construction::zap::exclamation:</p>
+<h1>What is this? Why?</h1><p>The goal is to use <a href="https://www.govtrack.us/developers/data">data</a> from
+<a href="https://www.govtrack.us/">govtrack.us</a> and some fancy <a href="http://d3js.org/">d3js</a>
+visualizations to create a multi-device, collaborative environment that allows
+for exploration and discovery inside a large (publicly available) dataset.</p>
+<p>This project tries to both explore new/novel data visualizations and
+interactions as well as expose already available data to provide actionable
+insights and increased transparency in government.</p>
+<p>This work is <strong><em>currently in progress</em></strong> at the
+<a href="http://www.cc.gatech.edu/gvu/ii/">Information Interfaces Lab</a> in the
+<a href="http://www.gvu.gatech.edu/">GVU Center</a> at
+<a href="http://www.gatech.edu/">Georgia Tech</a>.</p>
+<h2>What are you using?</h2><p>So far:</p>
+<ul>
+<li><a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> for text search</li>
+<li><a href="https://www.mysql.com/">MySQL</a> for everything else</li>
+<li><a href="https://nodejs.org/en/">Node.js</a> and
+  <a href="http://expressjs.com/en/index.html">Express.js</a> framework</li>
+<li><a href="http://backbonejs.org/">Backbone.js</a> for the client-side web</li>
+<li><a href="http://d3js.org/">d3js</a> to do some neat visualizations</li>
+<li>miscellaneous python scripts to pre-process and bulk import data</li>
+</ul>
+<p>Eventually:</p>
+<ul>
+<li>probably <a href="https://www.firebase.com/">Firebase</a> to facilitate easy real-time
+communications/collaboration between multiple devices</li>
+</ul>
+<h2>Getting Started</h2><p>Note: The <code>brew</code> command refers to <a href="http://brew.sh/">homebrew</a> a package manager
+for Mac OS X. Either replace with the proper package manager for your operating
+system (e.g. <code>apt-get</code> for Ubuntu) or install from official binaries.</p>
+<ol>
+<li><p>Install <a href="https://nodejs.org/en/">Node.js</a>, <a href="https://www.mysql.com/">MySQL</a>
+and <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a></p>
+<pre class="prettyprint source lang-shell"><code>brew install node
+brew install mysql # this takes a while
+brew install elasticsearch</code></pre><ul>
+<li>Consider installing
+<a href="https://www.mysql.com/products/workbench/">MySQL Workbench</a> as an
+alternative to using the command line interface for MySQL</li>
+</ul>
+</li>
+<li><p>Clone this repo</p>
+<pre class="prettyprint source lang-shell"><code>git clone git@github.com:BunsenMcDubbs/congressvis.git
+cd congressvis</code></pre></li>
+<li><p>Setup datastores</p>
+<ol>
+<li><p>Download data from <a href="https://www.govtrack.us/developers/data">GovTrack</a> into
+the <code>data/</code> directory (see more details in the README there).</p>
+<pre class="prettyprint source lang-shell"><code>cd data
+rsync -avz --delete govtrack.us::govtrackdata/congress/113/ .
+rsync -avz --delete govtrack.us::govtrackdata/congress-legislators/* membership
+rsync -avz govtrack.us::govtrackdata/us/sessions.tsv .
+rsync -avz --delete govtrack.us::govtrackdata/us/liv111.xml subjects/
+rsync -avz --delete govtrack.us::govtrackdata/us/crsnet.xml subjects/</code></pre></li>
+<li><p>Setup MySQL and import the schema from <code>data/utils/congressvis_schema.sql</code></p>
+</li>
+<li><p>Use <code>data/utils/mysql_import.py</code> to import data into MySQL (see documentation by
+running <code>python data/utils/mysql_import.py -h</code> and refer to README in data folder)</p>
+<pre class="prettyprint source lang-shell"><code># in a new (second) terminal window
+elasticsearch # start elasticsearch
+
+# back in the first one:
+cd .. # come back up to project root
+python data/utils/mysql_import.py -u &lt;USERNAME> -p &lt;PASSWORD> -db &lt;DATABASE> --path data/
+
+# once the importing is finished you can stop elasticsearch with Ctrl-C
+# and close the second window</code></pre></li>
+</ol>
+</li>
+<li><p>Install project dependencies</p>
+<pre class="prettyprint source lang-shell"><code># at the project root
+npm install
+
+npm install -g bower
+bower install</code></pre></li>
+<li><p>Copy <code>config-example.js</code> to <code>config.js</code> and fill in with the proper credentials</p>
+<pre class="prettyprint source lang-shell"><code>cp config-example.js config.js
+# edit config.js</code></pre></li>
+<li><p>Start the server</p>
+<pre class="prettyprint source lang-shell"><code>npm start # which runs the script bin/www - see package.json for more details</code></pre></li>
+<li><p>Now the server should be running on localhost:3000. Navigate to
+http://localhost:3000 in your favorite web browser to confirm.</p>
+<p><strong>Note:</strong> MySQL and Elasticsearch must be running for all parts to work</p>
+</li>
+<li><p><em>???</em></p>
+</li>
+<li><p><em>Congrats.</em> <img src="http://pixel.nymag.com/imgs/daily/vulture/2015/gifs/leo-toast-9.w529.h352.gif" alt="Cheers."></p>
+</li>
+</ol>
+<h2>API Documentation</h2><p><strong>Todo:</strong> write API, then document</p>
+<h2>Project Layout/Filesystem Overview</h2><p><strong>Note:</strong> This project layout was initially generated with the
+<a href="http://expressjs.com/en/starter/generator.html"><code>express-generator</code></a>
+and mostly follows standard Express.js conventions.</p>
+<h3>Directories</h3><ul>
+<li><code>data/</code> raw data from govtrack (see README there)<ul>
+<li><code>data/utils/</code> python scripts to quickly import data files into MySQL</li>
+</ul>
+</li>
+<li><code>api/</code> handlers and converters that talk with the database (ORM-esque)</li>
+<li><code>public/</code> (static) client-side resources<ul>
+<li><code>public/style</code> -&gt; stylesheets</li>
+<li><code>public/scripts</code> -&gt; client-side javascript ex) Backbone application,
+d3js visualizations</li>
+</ul>
+</li>
+<li><code>routes/</code> express routers (and a bit of database connection logic)</li>
+<li><code>views/</code> view templates (handlebars) that are (mostly) rendered server-side</li>
+</ul>
+<h3>Files of Interest</h3><ul>
+<li><code>bin/www</code> node server startup script<ul>
+<li>can be called with either <code>npm start</code> (recommended) or <code>./bin/www</code> from
+project root</li>
+</ul>
+</li>
+<li><code>config.js</code> deployment specific settings and sensitive information
+(credentials etc.)</li>
+<li><code>app.js</code></li>
+</ul>
+<h3>Database Schema</h3><p><strong>Todo:</strong> written documentation for database schema
+<img src="data/utils/schema_diagram.png" alt="mysql database diagram"></p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api_controllers_congress.html">api/controllers/congress</a></li><li><a href="module-api_controllers_hello.html">api/controllers/hello</a></li><li><a href="module-api_controllers_members.html">api/controllers/members</a></li><li><a href="module-api_controllers_votes.html">api/controllers/votes</a></li><li><a href="module-api_helpers_CongressHelper.html">api/helpers/CongressHelper</a></li><li><a href="module-api_helpers_MemberHelper.html">api/helpers/MemberHelper</a></li><li><a href="module-api_helpers_VoteHelper.html">api/helpers/VoteHelper</a></li><li><a href="module-api_utils_DBConnector.html">api/utils/DBConnector</a></li><li><a href="module-api_utils_Transformer.html">api/utils/Transformer</a></li></ul><h3>Classes</h3><ul><li><a href="CongressHelper.html">CongressHelper</a></li><li><a href="DBConnector.html">DBConnector</a></li><li><a href="MemberHelper.html">MemberHelper</a></li><li><a href="VoteHelper.html">VoteHelper</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jan 03 2016 20:32:20 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

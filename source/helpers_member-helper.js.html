@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: helpers/member-helper.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: helpers/member-helper.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var mysql = require('mysql');
+var Q = require('q');
+var _ = require('underscore');
+
+var schema = require('../swagger/member.json');
+var transform = require('../utils/transformer');
+
+var db = require('../utils/db-connector');
+
+/**
+ * Helper class for converting and retrieving members to/from the database
+ * @constructor
+ * @requires api/utils/DBConnector
+ * @requires api/utils/Transformer
+ */
+function MemberHelper() {}
+
+/**
+ * Retrieve member(s) based on id
+ * @param {?(string | string[] | Object)} id - one or more ids
+ *
+ *  - `(string | string[])` bioguide id(s), array will retrieve multiple
+ *
+ *  - `object` if specifying id other than bioguide.
+ *    If multiple id's are present, all will be retrieved.
+ *    ex) `{'thomas_id': (string | string[])}`
+ *
+ *    supports:
+ *      - bioguide_id
+ *      - thomas_id
+ *      - govtrack_id
+ *      - lis_id (only available for senators)
+ *
+ *  - `null` will retrieve all
+ * @returns { Promise } a promise that will resolve with a list of members
+ */
+MemberHelper.prototype.getMemberByID = function(id) {
+  var id_types = ['bioguide_id', 'thomas_id', 'govtrack_id', 'lis_id'];
+  // build query
+  var query = 'SELECT * FROM members';
+  if (!id) {
+    id = null;
+  } else {
+    if (id.constructor === Array || typeof id === 'string') {
+      if (typeof id === 'string') {
+        id = [id];
+      }
+      id = { bioguide_id : id };
+    }
+    query += ' WHERE ';
+    var given_id_types = Object.keys(id);
+    for (var i = 0; i &lt; given_id_types.length; i++) {
+      var id_type = given_id_types[i];
+      if (id_types.indexOf(id_type) !== -1) {
+        query += id_type + ' IN (' + db.escape(id[id_type]) + ')';
+      }
+      if (i &lt; given_id_types.length - 1) { query += ' OR '; }
+    }
+  }
+
+  // query database for members
+  var deferred = Q.defer();
+  db.pool.query(query, function(err, rows) {
+    if (err) { deferred.reject(err); }
+    else { deferred.resolve(transformMembers(rows)); }
+  });
+  return deferred.promise;
+};
+
+/**
+ * Retrieve member(s) based on name
+ * @param { string } name - name or name fragment to look for
+ * @param { number } [mode=0] - which degree of exact-ness to match the name
+ *  - 0: any partial match
+ *  - 1: exact match on either first, last or full name
+ *  - 2: exact match on full name
+ * @returns { Promise } a promise that will resolve with an array of members
+ */
+MemberHelper.prototype.getMemberByName = function(name, mode) {
+  mode = mode || 0;
+  var query = 'SELECT * FROM members WHERE name';
+  if (mode == 2) {
+    query += ' = \'' + name + '\'';
+  } else if (mode == 1) {
+    query += ' = \'' + name + '\' OR first_name = \'' + name + '\' ' +
+      'OR last_name = \'' + name + '\'';
+  } else {
+    query += ' LIKE \'%' + name + '%\'';
+  }
+  var deferred = Q.defer();
+  db.pool.query(query, function(err, rows) {
+    if (err) { deferred.reject(err); }
+    else { deferred.resolve(transformMembers(rows)); }
+  });
+  return deferred.promise;
+};
+
+/**
+ * Transform normalized database rows to JSON
+ * @memberof MemberHelper
+ * @param {( MemberRow | MemberRow[] )} rows - flat object(s) returned by database
+ * @returns {( Member | Member[] )} inflated member objects(s)
+ */
+function transformMembers(rows) {
+  if (Array.isArray(rows)) {
+    return _.map(rows, function(row) { return transform.rowToSchema(row, schema); });
+  } else {
+    return transform.rowToSchema(row, schema);
+  }
+}
+
+MemberHelper.prototype.transformMembers = transformMembers;
+
+/** @member { JSONSchema } */
+MemberHelper.prototype.schema = schema;
+
+/**
+ * A singleton instance of MemberHelper that uses a database connection to
+ * lookup and retrieve information about members.
+ * @module api/helpers/MemberHelper
+ * @see MemberHelper
+ */
+module.exports = new MemberHelper();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-api_controllers_congress.html">api/controllers/congress</a></li><li><a href="module-api_controllers_hello.html">api/controllers/hello</a></li><li><a href="module-api_controllers_members.html">api/controllers/members</a></li><li><a href="module-api_controllers_votes.html">api/controllers/votes</a></li><li><a href="module-api_helpers_CongressHelper.html">api/helpers/CongressHelper</a></li><li><a href="module-api_helpers_MemberHelper.html">api/helpers/MemberHelper</a></li><li><a href="module-api_helpers_VoteHelper.html">api/helpers/VoteHelper</a></li><li><a href="module-api_utils_DBConnector.html">api/utils/DBConnector</a></li><li><a href="module-api_utils_Transformer.html">api/utils/Transformer</a></li></ul><h3>Classes</h3><ul><li><a href="CongressHelper.html">CongressHelper</a></li><li><a href="DBConnector.html">DBConnector</a></li><li><a href="MemberHelper.html">MemberHelper</a></li><li><a href="VoteHelper.html">VoteHelper</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Jan 03 2016 20:32:20 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
