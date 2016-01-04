@@ -1,10 +1,13 @@
 {
   "name": "congressvis",
   "version": "0.0.0",
+  "author": "Andrew Dai",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-	  "test": "make test"
+    "test": "make test",
+    "docs": "make docs"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -21,6 +24,8 @@
     "z-schema": "^3.16.1"
   },
   "devDependencies": {
+    "bootprint": "^0.8.3",
+    "bootprint-swagger": "^0.13.1",
     "chai": "^3.4.1",
     "jsdoc": "^3.4.0",
     "mocha": "^2.2.5",

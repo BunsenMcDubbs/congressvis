@@ -12,5 +12,9 @@
 # ignore actual config file (with username, password, secrets etc)
 /config.js
 
+# ignore generated documentation
+/docs/*
+!docs/README.md
+
 *.gz
 *.log
