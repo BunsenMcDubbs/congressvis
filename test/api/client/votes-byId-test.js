@@ -6,16 +6,6 @@ var supertest = require('supertest');
 var api = supertest('http://localhost:3000'); // supertest init;
 
 var vote_schema = require('../../../api/swagger/vote.json');
-var member_vote_schema = require('../../../api/swagger/member-vote.json');
-var member_vote_short_schema = require('../../../api/swagger/member-vote-short.json');
-var member_votes_schema = {
-  type: 'array',
-  items: member_vote_schema
-};
-var member_votes_short_schema = {
-  type: 'array',
-  items: member_vote_short_schema
-};
 var error_schema = require('../../../api/swagger/error_message.json');
 
 describe('/votes', function() {
@@ -46,34 +36,7 @@ function helpTestVoteById(id) {
     .end(function(err, res) {
       if (err) return done (err);
       expect(validator.validate(res.body, vote_schema), 'correct vote schema').to.be.true;
-      expect(res.body.votes).to.have.length.above(0);
-      expect(validator.validate(res.body.votes, member_votes_schema), 'correct member-vote schema').to.be.true;
       done();
     });
   });
-  it('should respond with data for vote #' + id + ' (short=false) (200)', function(done) {
-    api.get('/api/votes/' + id + '?short=false')
-    .set('Accept', 'application/json')
-    .expect(200)
-    .end(function(err, res) {
-      if (err) return done (err);
-      expect(validator.validate(res.body, vote_schema), 'correct vote schema').to.be.true;
-      expect(res.body.votes).to.have.length.above(0);
-      expect(validator.validate(res.body.votes, member_votes_schema), 'correct member-vote schema').to.be.true;
-      done();
-    });
-  });
-  it('should respond with data for vote #' + id + ' in short form (200)', function(done) {
-    api.get('/api/votes/' + id + '?short=true')
-    .set('Accept', 'application/json')
-    .expect(200)
-    .end(function(err, res) {
-      if (err) return done (err);
-      expect(validator.validate(res.body, vote_schema), 'correct vote schema').to.be.true;
-      expect(res.body.votes_short).to.have.length.above(0);
-      expect(validator.validate(res.body.votes_short, member_votes_short_schema), 'correct member-vote-short schema').to.be.true;
-      done();
-    });
-  });
-
 }

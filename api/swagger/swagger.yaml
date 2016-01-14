@@ -275,6 +275,38 @@ paths:
           description: cannot find a matching congress
           schema:
             $ref: '#/definitions/error_message'
+  '/congress/{congress}/votes':
+    get:
+      summary: List all votes in a particular congress
+      operationId: getCongressVotes
+      tags:
+        - vote
+        - congress
+      parameters:
+        - in: path
+          name: congress
+          required: true
+          type: string
+        - in: query
+          name: include_votes
+          description: include individual member votes for each vote
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: successful operation, return with votes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/vote'
+        400:
+          description: not a valid congress id
+          schema:
+            $ref: '#/definitions/error_message'
+        404:
+          description: cannot find specified congress
+          schema:
+            $ref: '#/definitions/error_message'
   '/votes/{vote_id}':
     get:
       summary: Get information about votes by vote_id
@@ -286,11 +318,6 @@ paths:
           name: vote_id
           required: true
           type: string
-        - in: query
-          name: short
-          description: request short, condensed form for vote data
-          type: boolean
-          default: false
       responses:
         200:
           description: successful operation, return with vote information
@@ -298,6 +325,38 @@ paths:
             $ref: '#/definitions/vote'
         404:
           description: cannot find a matching vote
+          schema:
+            $ref: '#/definitions/error_message'
+  '/votes/byCongress/{congress}':
+    get:
+      summary: List all votes in a particular congress
+      operationId: getVotesByCongress
+      tags:
+        - vote
+        - congress
+      parameters:
+        - in: path
+          name: congress
+          required: true
+          type: string
+        - in: query
+          name: include_votes
+          description: include individual member votes for each vote
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: successful operation, return with votes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/vote'
+        400:
+          description: not a valid congress id
+          schema:
+            $ref: '#/definitions/error_message'
+        404:
+          description: cannot find specified congress
           schema:
             $ref: '#/definitions/error_message'
 definitions:
@@ -409,7 +468,6 @@ definitions:
     required:
       - vote_id
       - bill_id
-      - date
     properties:
       vote_id:
         type: string
@@ -427,50 +485,24 @@ definitions:
       subject:
         type: string
       votes:
-        type: array
-        items:
-          $ref: '#/definitions/member-vote'
-      votes_short:
-        type: array
-        items:
-          $ref: '#/definitions/member-vote-short'
-  member-vote:
-    type: object
-    required:
-      - bioguide_id
-      - vote
-      - display_as
-      - state
-      - name
-    properties:
-      bioguide_id:
-        type:
-          $ref: '#/definitions/bioguide_id'
-      vote:
-        type:
-          $ref: '#/definitions/vote-code'
-      display_as:
-        type: string
-      state:
-        type: string
-      name:
-        type: string
-  member-vote-short:
-    type: object
-    required:
-      - vote
-    properties:
-      bioguide_id:
-        type:
-          $ref: '#/definitions/bioguide_id'
-      vote_id:
-        type: string
-      vote:
-        type:
-          $ref: '#/definitions/vote_code'
-  vote-code:
-    type: string
-    enum:
-      - '+'
-      - '-'
-      - '0'
+        type: object
+        required:
+          - '+'
+          - '-'
+          - '0'
+        properties:
+          '+':
+            type: array
+            description: bioguide id's of Aye or Yea voting members
+            items:
+              type: string
+          '-':
+            type: array
+            description: bioguide id's of No or Nay voting members
+            items:
+              type: string
+          '0':
+            type: array
+            description: bioguide id's of Not Voting or Present (or other) members
+            items:
+              type: string
