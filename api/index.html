@@ -107,6 +107,16 @@
                         <td><p>List members by congress</p>
         </td>
                     </tr>
+                    <tr>
+                        <td><a href="#operation--congress--congress--votes-get">GET /congress/{congress}/votes</a></td>
+                        <td><p>List all votes in a particular congress</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--votes-byCongress--congress--get">GET /votes/byCongress/{congress}</a></td>
+                        <td><p>List all votes in a particular congress</p>
+        </td>
+                    </tr>
                 </tbody>
             </table>
             <h3 id="tag-vote" class="swagger-summary-tag">Tag: vote</h3>
@@ -121,8 +131,18 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td><a href="#operation--congress--congress--votes-get">GET /congress/{congress}/votes</a></td>
+                        <td><p>List all votes in a particular congress</p>
+        </td>
+                    </tr>
+                    <tr>
                         <td><a href="#operation--votes--vote_id--get">GET /votes/{vote_id}</a></td>
                         <td><p>Get information about votes by vote_id</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--votes-byCongress--congress--get">GET /votes/byCongress/{congress}</a></td>
+                        <td><p>List all votes in a particular congress</p>
         </td>
                     </tr>
                 </tbody>
@@ -481,6 +501,140 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <p>cannot find a matching congress</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <a class="json-schema-ref" href="#/definitions/error_message">error_message</a>
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>    
+        <span id="path--congress--congress--votes"></span>
+            <div id="operation--congress--congress--votes-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">List all votes in a particular congress</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/congress/{congress}/votes</strong></h3>
+                        Tags:
+                            <a href="#tag-vote">vote</a>, 
+                            <a href="#tag-congress">congress</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+                    
+                        <section class="sw-request-params">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-param-name"></th>
+                                    <th class="sw-param-description"></th>
+                                    <th class="sw-param-type"></th>
+                                    <th class="sw-param-data-type"></th>
+                                    <th class="sw-param-annotation"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                congress
+                                            <td></td>
+                                            <td>path</td>
+                                            <td><span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                                    <span class="json-property-required"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                include_votes
+                                            <td><p>include individual member votes for each vote</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">boolean</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>successful operation, return with votes</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                            
+                                                                            <section class="json-schema-array-items">
+                                                                                <span class="json-property-type">    <a class="json-schema-ref" href="#/definitions/vote">vote</a>
+                                                                                </span>
+                                                                                <span class="json-property-range" title="Value limits"></span>
+                                                                                
+                                                                                <div class="json-inner-schema">
+                                                                                    
+                                                                                </div>
+                                                                            </section>    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-400">
+                                        400 Bad Request
+                                    
+                                    </dt>
+                                    <dd class="sw-response-400">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>not a valid congress id</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <a class="json-schema-ref" href="#/definitions/error_message">error_message</a>
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-404">
+                                        404 Not Found
+                                    
+                                    </dt>
+                                    <dd class="sw-response-404">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>cannot find specified congress</p>
                                             
                                                 </div>
                                             </div>
@@ -1236,6 +1390,140 @@
                         </section>
                 </div>
             </div>    
+        <span id="path--votes-byCongress--congress-"></span>
+            <div id="operation--votes-byCongress--congress--get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">List all votes in a particular congress</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/votes/byCongress/{congress}</strong></h3>
+                        Tags:
+                            <a href="#tag-vote">vote</a>, 
+                            <a href="#tag-congress">congress</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+                    
+                        <section class="sw-request-params">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-param-name"></th>
+                                    <th class="sw-param-description"></th>
+                                    <th class="sw-param-type"></th>
+                                    <th class="sw-param-data-type"></th>
+                                    <th class="sw-param-annotation"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                congress
+                                            <td></td>
+                                            <td>path</td>
+                                            <td><span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                                    <span class="json-property-required"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                include_votes
+                                            <td><p>include individual member votes for each vote</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td><span class="json-property-type">boolean</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>successful operation, return with votes</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                            
+                                                                            <section class="json-schema-array-items">
+                                                                                <span class="json-property-type">    <a class="json-schema-ref" href="#/definitions/vote">vote</a>
+                                                                                </span>
+                                                                                <span class="json-property-range" title="Value limits"></span>
+                                                                                
+                                                                                <div class="json-inner-schema">
+                                                                                    
+                                                                                </div>
+                                                                            </section>    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-400">
+                                        400 Bad Request
+                                    
+                                    </dt>
+                                    <dd class="sw-response-400">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>not a valid congress id</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <a class="json-schema-ref" href="#/definitions/error_message">error_message</a>
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                                    <dt class="sw-response-404">
+                                        404 Not Found
+                                    
+                                    </dt>
+                                    <dd class="sw-response-404">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>cannot find specified congress</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <a class="json-schema-ref" href="#/definitions/error_message">error_message</a>
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>    
         <span id="path--votes--vote_id-"></span>
             <div id="operation--votes--vote_id--get" class="swagger--panel-operation-get panel">
                 <div class="panel-heading">
@@ -1272,19 +1560,6 @@
                                             </td>
                                             <td>
                                                     <span class="json-property-required"></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                short
-                                            <td><p>request short, condensed form for vote data</p>
-                                        </td>
-                                            <td>query</td>
-                                            <td><span class="json-property-type">boolean</span>
-                                        <span class="json-property-range" title="Value limits"></span>
-                                        
-                                            </td>
-                                            <td>
                                             </td>
                                         </tr>
                                 </tbody>
@@ -1718,142 +1993,6 @@
                                     </section>
                     </div>
                 </div>        
-                <div id="definition-member-vote" class="panel panel-definition">
-                        <div class="panel-heading">
-                                <h3 class="panel-title"><a name="/definitions/member-vote"></a>member-vote:
-                                    <span class="json-property-type"><span class="json-property-type">object</span>
-                <span class="json-property-range" title="Value limits"></span>
-                
-                </span>
-                                </h3>
-                        </div>
-                    <div class="panel-body">
-                            
-                                    <section class="json-schema-properties">
-                                        <dl>
-                                                <dt data-property-name="bioguide_id">
-                                                    <span class="json-property-name">bioguide_id:</span>
-                                                    <span class="json-property-type">[object Object]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="vote">
-                                                    <span class="json-property-name">vote:</span>
-                                                    <span class="json-property-type">[object Object]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="display_as">
-                                                    <span class="json-property-name">display_as:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="state">
-                                                    <span class="json-property-name">state:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="name">
-                                                    <span class="json-property-name">name:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                        </dl>
-                                    </section>
-                    </div>
-                </div>        
-                <div id="definition-member-vote-short" class="panel panel-definition">
-                        <div class="panel-heading">
-                                <h3 class="panel-title"><a name="/definitions/member-vote-short"></a>member-vote-short:
-                                    <span class="json-property-type"><span class="json-property-type">object</span>
-                <span class="json-property-range" title="Value limits"></span>
-                
-                </span>
-                                </h3>
-                        </div>
-                    <div class="panel-body">
-                            
-                                    <section class="json-schema-properties">
-                                        <dl>
-                                                <dt data-property-name="bioguide_id">
-                                                    <span class="json-property-name">bioguide_id:</span>
-                                                    <span class="json-property-type">[object Object]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="vote_id">
-                                                    <span class="json-property-name">vote_id:</span>
-                                                    <span class="json-property-type">string</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                                <dt data-property-name="vote">
-                                                    <span class="json-property-name">vote:</span>
-                                                    <span class="json-property-type">[object Object]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                        <span class="json-property-required"></span>
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                    </div>
-                                                </dd>
-                                        </dl>
-                                    </section>
-                    </div>
-                </div>        
                 <div id="definition-thomas_id" class="panel panel-definition">
                         <div class="panel-heading">
                                 <h3 class="panel-title"><a name="/definitions/thomas_id"></a>thomas_id:
@@ -1915,7 +2054,6 @@
                                                     <span class="json-property-type">string</span>    <span class="json-property-format">(date-time)</span>
                                                     <span class="json-property-range" title="Value limits"></span>
                                                     
-                                                        <span class="json-property-required"></span>
                                                 </dt>
                                                 <dd>
                                                     
@@ -1973,7 +2111,7 @@
                                                 </dd>
                                                 <dt data-property-name="votes">
                                                     <span class="json-property-name">votes:</span>
-                                                    <span class="json-property-type">object[]</span>
+                                                    <span class="json-property-type">object</span>
                                                     <span class="json-property-range" title="Value limits"></span>
                                                     
                                                 </dt>
@@ -1981,59 +2119,77 @@
                                                     
                                                     <div class="json-inner-schema">
                                                         
-                                                                        <section class="json-schema-array-items">
-                                                                            <span class="json-property-type">    <a class="json-schema-ref" href="#/definitions/member-vote">member-vote</a>
-                                                                            </span>
-                                                                            <span class="json-property-range" title="Value limits"></span>
-                                                                            
-                                                                            <div class="json-inner-schema">
+                                                                <section class="json-schema-properties">
+                                                                    <dl>
+                                                                            <dt data-property-name="0">
+                                                                                <span class="json-property-name">0:</span>
+                                                                                <span class="json-property-type">string[]</span>
+                                                                                <span class="json-property-range" title="Value limits"></span>
                                                                                 
-                                                                            </div>
-                                                                        </section>                </div>
-                                                </dd>
-                                                <dt data-property-name="votes_short">
-                                                    <span class="json-property-name">votes_short:</span>
-                                                    <span class="json-property-type">object[]</span>
-                                                    <span class="json-property-range" title="Value limits"></span>
-                                                    
-                                                </dt>
-                                                <dd>
-                                                    
-                                                    <div class="json-inner-schema">
-                                                        
-                                                                        <section class="json-schema-array-items">
-                                                                            <span class="json-property-type">    <a class="json-schema-ref" href="#/definitions/member-vote-short">member-vote-short</a>
-                                                                            </span>
-                                                                            <span class="json-property-range" title="Value limits"></span>
-                                                                            
-                                                                            <div class="json-inner-schema">
+                                                                                    <span class="json-property-required"></span>
+                                                                            </dt>
+                                                                            <dd>
+                                                                                <p>bioguide id&#39;s of Not Voting or Present (or other) members</p>
+                                                                
+                                                                                <div class="json-inner-schema">
+                                                                                    
+                                                                                                    <section class="json-schema-array-items">
+                                                                                                        <span class="json-property-type">string</span>
+                                                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                                                        
+                                                                                                        <div class="json-inner-schema">
+                                                                                                            
+                                                                                                        </div>
+                                                                                                    </section>                </div>
+                                                                            </dd>
+                                                                            <dt data-property-name="-">
+                                                                                <span class="json-property-name">+:</span>
+                                                                                <span class="json-property-type">string[]</span>
+                                                                                <span class="json-property-range" title="Value limits"></span>
                                                                                 
-                                                                            </div>
-                                                                        </section>                </div>
+                                                                                    <span class="json-property-required"></span>
+                                                                            </dt>
+                                                                            <dd>
+                                                                                <p>bioguide id&#39;s of Aye or Yea voting members</p>
+                                                                
+                                                                                <div class="json-inner-schema">
+                                                                                    
+                                                                                                    <section class="json-schema-array-items">
+                                                                                                        <span class="json-property-type">string</span>
+                                                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                                                        
+                                                                                                        <div class="json-inner-schema">
+                                                                                                            
+                                                                                                        </div>
+                                                                                                    </section>                </div>
+                                                                            </dd>
+                                                                            <dt data-property-name="-">
+                                                                                <span class="json-property-name">-:</span>
+                                                                                <span class="json-property-type">string[]</span>
+                                                                                <span class="json-property-range" title="Value limits"></span>
+                                                                                
+                                                                                    <span class="json-property-required"></span>
+                                                                            </dt>
+                                                                            <dd>
+                                                                                <p>bioguide id&#39;s of No or Nay voting members</p>
+                                                                
+                                                                                <div class="json-inner-schema">
+                                                                                    
+                                                                                                    <section class="json-schema-array-items">
+                                                                                                        <span class="json-property-type">string</span>
+                                                                                                        <span class="json-property-range" title="Value limits"></span>
+                                                                                                        
+                                                                                                        <div class="json-inner-schema">
+                                                                                                            
+                                                                                                        </div>
+                                                                                                    </section>                </div>
+                                                                            </dd>
+                                                                    </dl>
+                                                                </section>
+                                                    </div>
                                                 </dd>
                                         </dl>
                                     </section>
-                    </div>
-                </div>        
-                <div id="definition-vote-code" class="panel panel-definition">
-                        <div class="panel-heading">
-                                <h3 class="panel-title"><a name="/definitions/vote-code"></a>vote-code:
-                                    <span class="json-property-type"><span class="json-property-type">string</span>    <span class="json-property-enum" title="Possible values">, x &isin; {
-                                <span class="json-property-enum-item">+</span>
-                            ,
-                                <span class="json-property-enum-item">-</span>
-                            ,
-                                <span class="json-property-enum-item">0</span>
-                            
-                        }
-                        </span>
-                <span class="json-property-range" title="Value limits"></span>
-                
-                </span>
-                                </h3>
-                        </div>
-                    <div class="panel-body">
-                            
                     </div>
                 </div>        
                 <div id="definition-welcome" class="panel panel-definition">
