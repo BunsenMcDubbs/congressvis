@@ -57,12 +57,22 @@ router.get('/congress/:congress',
   congress.validateCongressId,
   congress.getCongressById);
 
-/** GET member by name */
+/** GET congress's member(s) */
 router.get('/congress/:congress/members',
   congress.validateCongressId,
   congress.getCongressMembers);
 
+/** GET congress's votes */
+router.get('/congress/:congress/votes',
+  congress.validateCongressId,
+  congress.getCongressVotes);
+
 /** GET vote by id */
 router.get('/votes/:vote_id', votes.getVoteByVoteId);
+
+/** GET vote(s) by congress */
+router.get('/votes/byCongress/:congress',
+  congress.validateCongressId,
+  votes.getVotesByCongress);
 
 module.exports = router;

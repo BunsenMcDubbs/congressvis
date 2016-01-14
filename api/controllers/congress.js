@@ -1,9 +1,12 @@
 var congress_helper = require('../helpers/congress-helper');
 
+var VotesController = require('./votes');
+
 /**
  * API controller for retrieving information about Congresses
  * @module api/controllers/congress
  * @requires api/helpers/CongressHelper
+ * @requires api/controllers/members
  */
 var exports = {};
 
@@ -53,5 +56,13 @@ exports.validateCongressId = function(req, res, next) {
     next();
   }
 };
+
+/**
+ * GET votes by congress, provided in request parameters
+ * (delegates to getVotesByCongress in votes controller)
+ * @function
+ * @see module:api/controllers/votes.getVotesByCongress
+ */
+exports.getCongressVotes = VotesController.getVotesByCongress;
 
 module.exports = exports;

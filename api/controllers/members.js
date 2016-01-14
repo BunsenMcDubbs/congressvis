@@ -94,6 +94,7 @@ exports.getMemberByName = function(req, res, next) {
  * GET members by congress, provided in the request parameters
  * (delegates to the getCongressMembers function in congress controller)
  * @function
+ * @see module:api/controllers/congress.getCongressMembers
  */
 exports.getMembersByCongress = CongressController.getCongressMembers;
 
