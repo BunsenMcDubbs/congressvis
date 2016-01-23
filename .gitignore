@@ -15,6 +15,7 @@
 # ignore generated documentation
 /docs/*
 !docs/README.md
+!docs/ABOUT.md
 
 *.gz
 *.log

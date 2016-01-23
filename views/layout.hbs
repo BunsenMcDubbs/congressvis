@@ -2,8 +2,11 @@
 <html>
   <head>
     <title>{{title}}</title>
+    <link rel='stylesheet' href='/vendor/material-design-lite/material.css' />
     <link rel='stylesheet' href='/styles/style.css' />
     {{{block "stylesheets"}}}
+    <script src="vendor/material-design-lite/material.min.js"></script>
+    <script data-main="scripts/config" src="vendor/requirejs/require.js"></script>
   </head>
   <body>
     {{{body}}}
